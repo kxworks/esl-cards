@@ -1,0 +1,8 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/kxwofqva/public_html/esl-cards/
+    - /bin/cp -R client $DEPLOYPATH
+    - /bin/cp -R server $DEPLOYPATH
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp edit.html $DEPLOYPATH
