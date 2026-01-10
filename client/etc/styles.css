@@ -1,0 +1,314 @@
+/***************/
+/*** GENERAL ***/
+/***************/
+
+body {
+    padding: 0px 10px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h3 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+button {
+    background-color: #eee;
+    color: black;
+    border: 1px solid #777;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+button.active {
+    background-color: rgb(186, 186, 186);
+}
+
+button:disabled {
+    background-color: #eee;
+    color: gray;
+    border-color: lightgray;
+    cursor: initial;
+}
+
+a {
+    font-size: 16px;
+}
+
+hr {
+    width: 90%;
+    margin-left: 0;
+}
+
+/****************/
+/*** SETTINGS ***/
+/****************/
+
+#settings {
+    width: 90%;
+    display: none;
+    font-size: 0.9em;
+}
+
+#cardstatus {
+    position: absolute;
+    font-size: 2em;
+    margin-left: -150px;
+}
+
+#reviewmode {
+    display: none;
+}
+
+/******************/
+/*** WORD LISTS ***/
+/******************/
+
+#wordlists {
+    width: 90%;
+    margin-bottom: 0px;
+}
+
+#lists {
+    width: 98%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+#lists button {
+    margin-bottom: 5px;
+}
+
+#showall-button, .link-button {
+    background-color: transparent;
+    border: 0;
+    padding: 0 5px;
+    margin: 0;
+    text-decoration: underline;
+    display: none;
+}
+
+#pagenav {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 0.875rem;
+    color: black;
+}
+
+/******************/
+/*** FLASHCARDS ***/
+/******************/
+
+#flashcard {
+    width: 300px; 
+    height: 175px; 
+    text-align:center; 
+    padding: 10px; 
+    margin-bottom: 20px; 
+    border: 1px solid gray; 
+    border-radius: 5px; 
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+
+#hint {
+  width: 90%;
+  margin: 50px auto;
+}
+
+#answer {
+  width: 90%; 
+  margin: 50px auto;
+}
+
+.card-text {
+    font-size:1.75em;
+    display:inline-block;
+}
+
+#tap {
+    color:darkgray;
+    font-size: 0.875em;
+    position: absolute;
+    left: 60px;
+    bottom: 20px;
+}
+
+.helper-text {
+    color:rgb(152, 152, 152);
+    font-size: 0.875em;
+}
+
+#savecard {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 0.75em;
+}
+
+#flashtype {
+  font-size: 0.75em;
+}
+
+#status {
+  display: inline-block; 
+  width: 95px;
+  font-size: 0.9em;
+}
+
+#random {
+  margin-left: 5px;
+}
+
+#quizstatus {
+  display: inline-block; 
+  font-size:0.95em;
+}
+
+.audio-button {
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    font-size: 0.65em;
+    display: inline-block;
+}
+
+#main-audio {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+    font-size: 1.25em;
+}
+
+/* ************ */
+/* *** EDIT *** */
+/* ************ */
+
+#editpane {
+    margin: 13px;
+    margin-left: 0;
+}
+
+table {
+    width: 500px;
+}
+
+textarea {
+    width: 400px;
+}
+
+table {
+    text-align: left;
+    border-collapse: collapse;
+    border-color: gray;
+}
+
+th, td {
+    border: 1px solid gray;
+}
+
+th, table input {
+    padding: 12px 10px;
+}
+
+textarea {
+    padding: 10px;
+    border-color: gray;
+    height: auto;
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+table input {
+    box-sizing: border-box;
+    border: none;
+    width: 100%;
+}
+
+#editlist {
+    display: none;
+}
+
+#editlistname {
+    display: inline-block;
+    padding: 5px 10px 3px 5px;
+    border: 0;
+    border-bottom: 1px solid rgb(161, 160, 160);
+    font-weight: bold;
+    width: 280px;
+    font-size: 0.9em;
+}
+
+#editmode h4 {
+    margin-top: 17px;
+    margin-bottom: 10px;
+}
+
+#addnewrowbutton {
+    display: inline-block;
+    margin-top: 5px;
+    background-color: transparent;
+}
+
+.row-button {
+    border: 0;
+    background-color: transparent;
+    font-weight: bold;
+    padding: 0px 5px;
+    margin-left: 5px;
+}
+
+.seq-row-button {
+    cursor: grab;
+}
+
+#deletelistbutton {
+    display: block;
+    margin-top: 10px;
+}
+
+#resetbutton {
+    display: none;
+}
+
+#deletelistbutton, #resetbutton {
+    border: 0;
+    background-color: transparent;
+    text-decoration: underline;
+    color: #777;
+    padding-left: 7px;
+}
+
+/* *********************** */
+/* *** SMALLER SCREENS *** */
+/* *********************** */
+
+@media screen and (max-width: 1200px) {
+    #showall-button {
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    table {
+        width: 450px;
+    }
+    textarea {
+        width: 400px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    table {
+        width: 380px;
+    }
+    textarea {
+        width: 300px;
+    }
+}

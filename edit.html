@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>ESL Flashcards</title>
+        <link rel="stylesheet" href="./client/etc/styles.css"/>
+        <script src="./client/controllers/lists.js" defer></script>
+        <script src="./client/pages/edit.js" defer></script>
+    </head>
+    <body onload="checkEditAccess()">
+        <h1>ESL Flashcards <a id="pagenav" class="link-button" href="./index.html">Back to home</a></h1>
+        <div id="wordlists">
+            <h2>Edit word lists <button id="showall-button" onclick="toggleShowAllLists()">Show all</button></h2>
+            <div id="lists"></div>
+        </div>
+        <h3 id="editlist">Edit: ...</h3>
+        <div id="editmode">
+            <h4>View mode</h4>
+            <button id="edittable" class="active" onclick="changeEditMode('table')">Table</button>
+            <button id="edittext" onclick="changeEditMode('text')">Text (CSV)</button>
+        </div>
+        <div id="editpane"></div>
+        <div>
+            <button id="submitbutton" onclick="submitChanges()">Save Changes</button>
+            <button id="resetbutton" onclick="resetChanges()">Reset Changes</button>
+            <button id="deletelistbutton" onclick="confirmDeleteList()">Delete List</button>
+        </div>
+        <br/><br/>
+    </body>
+</html>
