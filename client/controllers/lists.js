@@ -9,7 +9,6 @@ function getAllLists(callback) {
 }
 
 function createList(body, callback) {
-    console.log("controller create");
     genericFetch(FILE_LOCATION, "POST", body, callback);
 }
 
