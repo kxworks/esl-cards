@@ -11,6 +11,7 @@ let editMode = "table";
 let createMode = false;
 let selectedRow;
 let vocabLists;
+let changesDetected = false;
 
 // ******************
 // *** WORD LISTS ***
@@ -30,6 +31,10 @@ function getList(id) {
 }
 
 function changeList(option) {
+    if (changesDetected) {
+        let confirmChange = confirm("Are you sure you want to change list? Any unsaved changes will be lost.");
+        if (!confirmChange) return false;
+    }
     if (createMode) createMode = false;
     list = option;
     start();
@@ -78,7 +83,9 @@ function generateGUID() {
                .toString(16)
                .substring(1);
   }
-  return s4() + '-' + s4() + '-' + s4() + '-' + s4();
+  let newGUID = s4() + '-' + s4() + '-' + s4() + '-' + s4();
+  if (Object.keys(vocabLists).includes(newGUID)) return generateGUID();
+  return newGUID;
 }
 
 // *****************
@@ -160,14 +167,34 @@ function addRowToTable(useTbody) {
 
 function createNewTableRow(base, baseLang, target, targetLang) {
     let row = document.createElement("tr");
-    row.setAttribute("ondragenter", "dragInlineSeq(event)")
-    row.innerHTML = "<td><input type='text' value='"+base+"' placeholder='Add "+baseLang+"...'/></td><td><input type='text' value='"+target+"' placeholder='Add "+targetLang+"...'/></td><td style='border: none;'><button class='row-button seq-row-button' draggable='true' ondragstart='startInlineSeq(event)' ondragend='endInlineSeq(event)' >&udarr;</button>&nbsp;<button class='row-button' onclick='deleteRow(event)'>&#10005;</button></td>";
+    row.setAttribute("ondragenter", "dragInlineSeq(event)");
+    // Base input 
+    let baseInput = document.createElement("input");
+    baseInput.setAttribute("type", "text");
+    baseInput.setAttribute("value", base);
+    baseInput.setAttribute("placeholder", "Add "+baseLang+"...");
+    // Target input
+    let targetInput = document.createElement("input");
+    targetInput.setAttribute("type", "text");
+    targetInput.setAttribute("value", target);
+    targetInput.setAttribute("placeholder", "Add "+targetLang+"...");
+    // TD elements
+    let baseTd = document.createElement("td");
+    baseTd.appendChild(baseInput);
+    let targetTd = document.createElement("td");
+    targetTd.appendChild(targetInput);
+    // Add to row
+    row.appendChild(baseTd);
+    row.appendChild(targetTd);
+    let controlsTd = "<td style='border: none;'><button class='row-button seq-row-button' draggable='true' ondragstart='startInlineSeq(event)' ondragend='endInlineSeq(event)' >&udarr;</button>&nbsp;<button class='row-button' onclick='deleteRow(event)'>&#10005;</button></td>";
+    row.innerHTML += controlsTd;
     return row;
 }
 
 function deleteRow(event) {
     let row = event.target.parentElement.parentElement;
     row.remove();
+    enableResetButtonWrapper();
 }
 
 function generateText() {
@@ -189,7 +216,7 @@ function convertVocabListToCSV(list) {
     else return result;
 }
 
-function addInputListeners(type) {
+function addInputListeners() {
     document.querySelectorAll("#editpane input, #editpane textarea").forEach((input) => {
         input.removeEventListener("input", enableResetButtonWrapper);
     });
@@ -333,10 +360,12 @@ function toggleResetChangesButton(disabled) {
     if (disabled) { 
         document.getElementById("submitbutton").setAttribute("disabled", disabled);
         document.getElementById("resetbutton").style.display = "none";
+        changesDetected = false;
     }
     else { 
         document.getElementById("submitbutton").removeAttribute("disabled");
         if (!createMode) document.getElementById("resetbutton").style.display = "inline-block";
+        changesDetected = true;
     }
 
 }
@@ -415,7 +444,7 @@ function load() {
 function loadPage(serverResponse) {
     vocabLists = serverResponse;
     generateListsHTML();
-    getInitialList();
+    if (list == "") getInitialList();
     start();
 }
 
