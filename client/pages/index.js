@@ -450,6 +450,10 @@ function updateModeView() {
     };
 }
 
+// *****************
+// *** DARK MODE ***
+// *****************
+
 function changeDarkMode(enabled) {
     darkMode = enabled;
     updateDarkModeView();
