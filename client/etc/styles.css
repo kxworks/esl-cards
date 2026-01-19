@@ -298,12 +298,6 @@ table input {
 /* *** SMALLER SCREENS *** */
 /* *********************** */
 
-/* @media screen and (max-width: 1200px) {
-    #showall-button {
-        display: inline-block;
-    }
-} */
-
 @media screen and (max-width: 600px) {
     table {
         width: 450px;
