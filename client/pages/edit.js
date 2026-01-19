@@ -12,6 +12,7 @@ let createMode = false;
 let selectedRow;
 let vocabLists;
 let changesDetected = false;
+let darkMode = false;
 
 // ******************
 // *** WORD LISTS ***
@@ -445,6 +446,8 @@ function loadPage(serverResponse) {
     vocabLists = serverResponse;
     generateListsHTML();
     if (list == "") getInitialList();
+    getDarkModePref();
+    updateDarkModeView();
     start();
 }
 
@@ -468,4 +471,26 @@ function start() {
     }
     showEditMode();
     toggleResetChangesButton(true);
+}
+
+function getDarkModePref() {
+    let prefs = localStorage.getItem("prefs")
+    if (prefs) { 
+        prefsObj = JSON.parse(prefs);
+        if (prefsObj.darkMode) darkMode = prefsObj.darkMode;
+    }
+}
+
+function updateDarkModeView() {
+    if (darkMode) {
+        let style = document.createElement("link");
+        style.setAttribute("rel", "stylesheet");
+        style.setAttribute("href", "./client/etc/darkmode.css");
+        style.setAttribute("id", "darkmodeStyles");
+        document.head.appendChild(style);
+    }
+    else {
+        let darkModeTag = document.getElementById("darkmodeStyles");
+        if (darkModeTag) document.head.removeChild(darkModeTag);
+    }
 }

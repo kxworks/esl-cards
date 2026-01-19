@@ -16,6 +16,7 @@ let showAll = false;
 let allCards = [];
 let savedCards = [];
 let vocabLists = {};
+let darkMode = false;
 
 // **************
 // *** EVENTS ***
@@ -234,7 +235,7 @@ function showCard() {
     let flashcard = document.getElementById("flashcard");
     let tap = document.getElementById("tap");
     let saveButton = document.getElementById("savecard");
-    flashcard.style.backgroundColor = "white";
+    flashcard.classList = "";
     hint.style.display = "block";
     answer.style.display = "none";
     tap.style.visibility = "visible";
@@ -263,7 +264,7 @@ function showCard() {
     if (currentResults[cardIdx] == true) cardStatus.innerHTML = "&check;";
     else if (currentResults[cardIdx] == false) cardStatus.innerHTML = "&#10005;";
     else cardStatus.innerHTML = "";
-    document.getElementById("quizstatus").innerHTML = "Card: "+(cardIdx+1)+"/"+currentList.length+" ("+(currentList.length - correctSoFar)+" left)";
+    document.getElementById("quizstatus").innerHTML = (cardIdx+1)+"/"+currentList.length+" ("+(currentList.length - correctSoFar)+" left)";
 
     if (cardAlreadySaved(base, target)) toggleSavedButton(true);
     else toggleSavedButton(false);
@@ -277,14 +278,14 @@ function showCardAnswer() {
     let saveButton = document.getElementById("savecard");
 
     if (answer.style.display == "none") {
-        flashcard.style.backgroundColor = "#eee";
+        flashcard.classList = "answer";
         hint.style.display = "none";
         answer.style.display = "block";
         tap.style.visibility = "hidden";
         saveButton.style.visibility = "hidden";
     }
     else {
-        flashcard.style.backgroundColor = "white";
+        flashcard.classList = "";
         hint.style.display = "block";
         answer.style.display = "none";
         tap.style.visibility = "visible";
@@ -353,6 +354,7 @@ function loadPage(serverResponse) {
     getSaved();
     updateSaved();
     updateModeView();
+    updateDarkModeView();
     start();
 }
 
@@ -379,11 +381,12 @@ function getPrefs() {
         prefsObj = JSON.parse(prefs);
         if (prefsObj.mode) mode = prefsObj.mode;
         if (prefsObj.view) view = prefsObj.view;
+        if (prefsObj.darkMode) darkMode = prefsObj.darkMode;
     }
 }
 
 function savePrefs() {
-    let prefsObj = { mode: mode, view: view };
+    let prefsObj = { mode: mode, view: view, darkMode: darkMode };
     localStorage.setItem("prefs", JSON.stringify(prefsObj)); 
 }
 
@@ -445,4 +448,30 @@ function updateModeView() {
         document.getElementById("reviewmode").style.display = "none";
         document.getElementById("quizmode").style.display = "block";
     };
+}
+
+// *****************
+// *** DARK MODE ***
+// *****************
+
+function changeDarkMode(enabled) {
+    darkMode = enabled;
+    updateDarkModeView();
+    savePrefs();
+}
+
+function updateDarkModeView() {
+    if (darkMode) {
+        let style = document.createElement("link");
+        style.setAttribute("rel", "stylesheet");
+        style.setAttribute("href", "./client/etc/darkmode.css");
+        style.setAttribute("id", "darkmodeStyles");
+        document.head.appendChild(style);
+    }
+    else {
+        let darkModeTag = document.getElementById("darkmodeStyles");
+        if (darkModeTag) document.head.removeChild(darkModeTag);
+    }
+    let activeButtonId = darkMode ? "darkbutton" : "lightbutton";
+    updateActiveButton("darkmode", activeButtonId);
 }
