@@ -8,10 +8,10 @@
         <script src="./client/controllers/lists.js" defer></script>
         <script src="./client/pages/edit.js" defer></script>
     </head>
-    <body onload="checkEditAccess()">
+    <body onload="initialLoadChecks()">
         <h1>ESL Flashcards <a id="pagenav" class="link-button" href="./index.html">Back to home</a></h1>
         <div id="wordlists">
-            <h2>Edit word lists <button id="showall-button" onclick="toggleShowAllLists()">Show all</button></h2>
+            <h2>Edit word lists</h2>
             <div id="lists"></div>
         </div>
         <h3 id="editlist">Edit: ...</h3>

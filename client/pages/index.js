@@ -12,7 +12,6 @@ let showSettings = false;
 let currentList = [];
 let currentResults = [];
 let correctSoFar = 0;
-let showAll = false;
 let allCards = [];
 let savedCards = [];
 let vocabLists = {};
@@ -77,20 +76,6 @@ function speakTextOnCard(event) {
 // *** WORD LISTS ***
 // ******************
 
-function generateListsHTML() {
-    document.getElementById("lists").innerHTML = "";
-    // saved button
-    let disabled = (savedCards == [] ? "disabled" : "");
-    document.getElementById("lists").innerHTML += '<button id="saved" onclick="changeList(event.target.id)" '+disabled+'>Saved</button> ';
-    document.getElementById("lists").innerHTML += "|&nbsp;";
-    // all
-    document.getElementById("lists").innerHTML += '<button id="all" onclick="changeList(event.target.id)">All</button> ';
-    // lists
-    for (let list in vocabLists) {
-        document.getElementById("lists").innerHTML += '<button id="'+list+'" onclick="changeList(event.target.id)" '+disabled+'>'+vocabLists[list].title+'</button> ';
-    }
-}
-
 function sortListIdsByTitle() {
     let result = [];
     let titles = [];
@@ -115,17 +100,22 @@ function generateListsDropdown() {
     select.setAttribute("id", "list-dropdown");
     select.addEventListener("change", function(event) { changeList(event.target.value); });
     select.innerHTML += '<option value="all">All Words</option>';
-    select.innerHTML += '<option value="saved" disabled>My Saved Words</option>';
     let sortedVocabListIds = sortListIdsByTitle();
     sortedVocabListIds.forEach(id => {
         select.innerHTML += '<option value="'+id+'">'+vocabLists[id].title+'</option>';
     });
+    select.innerHTML += '<option value="saved" disabled></option>';
+    // spacer + saved
+    let spacer = document.createElement("span");
+    spacer.innerHTML = "&nbsp;&nbsp;|&nbsp;&nbsp;";
+    let savedButton = document.createElement("button");
+    savedButton.id = "saved";
+    savedButton.innerHTML = "Saved";
+    savedButton.addEventListener("click", function(event) { changeList(event.target.id) });
+    // add to page
+    document.getElementById("lists").appendChild(savedButton);
+    document.getElementById("lists").appendChild(spacer);
     document.getElementById("lists").appendChild(select);
-    // saved button
-    //let savedSpan = document.createElement("span");
-    //let disabled = (savedCards == [] ? "disabled" : "");
-    //document.getElementById("lists").innerHTML += '<span>&nbsp;|&nbsp;</span>'; //<button id="saved" onclick="changeList(event.target.id)" '+disabled+'>My Saved Words</button>';
-    //document.getElementById("lists").appendChild(savedSpan);
 }
 
 function getList(id) {
@@ -168,13 +158,13 @@ function getSaved() {
 }
 
 function updateSaved() {
-    // let savedButton = document.getElementById("saved");
-    // if (savedCards.length > 0) savedButton.removeAttribute("disabled");
-    // else savedButton.setAttribute("disabled", "true");
+    let savedButton = document.getElementById("saved");
+    if (savedCards.length > 0) savedButton.removeAttribute("disabled");
+    else savedButton.setAttribute("disabled", "true");
 
-    let savedOption = document.getElementById("list-dropdown").querySelector("option[value='saved']");
-    if (savedCards.length > 0) savedOption.removeAttribute("disabled");
-    else savedOption.setAttribute("disabled", "true");
+    // let savedOption = document.getElementById("list-dropdown").querySelector("option[value='saved']");
+    // if (savedCards.length > 0) savedOption.removeAttribute("disabled");
+    // else savedOption.setAttribute("disabled", "true");
 
 }
 
@@ -373,20 +363,20 @@ function load() {
 function loadPage(serverResponse) {
     vocabLists = serverResponse;
     getPrefs();
+    updateDarkModeView();
     generateLanguageButtons();
     generateModeButtons();
-    //generateListsHTML();
     generateListsDropdown();
     createAllList();
     getSaved();
     updateSaved();
     updateModeView();
-    updateDarkModeView();
     start();
 }
 
 function start() {
     updateActiveButton("lists", list);
+    document.getElementById("list-dropdown").value = list;
     currentList = getList(list);
     createResultList();
     correctSoFar = 0;

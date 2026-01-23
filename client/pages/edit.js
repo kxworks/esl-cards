@@ -6,7 +6,6 @@ const BASE_LANG = { name: "English", dialect: "en-US" };
 const TARGET_LANG = { name: "Spanish", dialect: "es-MX" };
 let list = "";
 let currentList = [];
-let showAll = false;
 let editMode = "table";
 let createMode = false;
 let selectedRow;
@@ -18,13 +17,45 @@ let darkMode = false;
 // *** WORD LISTS ***
 // ******************
 
-function generateListsHTML() {
-    document.getElementById("lists").innerHTML = "";
-    document.getElementById("lists").innerHTML += '<button id="create" onclick="startNewList()">+ Create List</button> ';
-    document.getElementById("lists").innerHTML += "|&nbsp;";
+function sortListIdsByTitle() {
+    let result = [];
+    let titles = [];
+    let titlesToIdsMap = {};
     for (let list in vocabLists) {
-        document.getElementById("lists").innerHTML += '<button id="'+list+'" onclick="changeList(event.target.id)">'+vocabLists[list].title+'</button> ';
+        let title = vocabLists[list].title;
+        titles.push(title);
+        titlesToIdsMap[title] = list;
     }
+    let sortedTitles = titles.sort();
+    sortedTitles.forEach((title) => {
+        let id = titlesToIdsMap[title];
+        result.push(id);
+    });
+    return result;
+}
+
+function generateListsDropdown() {
+    document.getElementById("lists").innerHTML = "";
+    // lists dropdown
+    let select = document.createElement("select");
+    select.setAttribute("id", "list-dropdown");
+    select.addEventListener("change", function(event) { changeList(event.target.value); });
+    let sortedVocabListIds = sortListIdsByTitle();
+    sortedVocabListIds.forEach(id => {
+        select.innerHTML += '<option value="'+id+'">'+vocabLists[id].title+'</option>';
+    });
+    select.innerHTML += '<option value="create" disabled></option>';
+    // spacer + create
+    let spacer = document.createElement("span");
+    spacer.innerHTML = "&nbsp;&nbsp;|&nbsp;&nbsp;";
+    let createNew = document.createElement("button");
+    createNew.id = "create";
+    createNew.innerHTML = "+ Create List";
+    createNew.addEventListener("click", startNewList);
+    // add to page
+    document.getElementById("lists").appendChild(createNew);
+    document.getElementById("lists").appendChild(spacer);
+    document.getElementById("lists").appendChild(select);
 }
 
 function getList(id) {
@@ -46,22 +77,6 @@ function updateActiveButton(buttonListDivId, buttonId) {
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].className = "";
         if (buttons[i].id == buttonId) buttons[i].className = "active";
-    }
-}
-
-function toggleShowAllLists() {
-    let lists = document.getElementById("lists");
-    let button = document.getElementById("showall-button");
-    showAll = !showAll;
-    if (showAll) {
-        button.innerHTML = "Collapse";
-        lists.style.overflow = "visible";
-        lists.style.whiteSpace = "wrap";
-    }
-    else {
-        button.innerHTML = "Show all";
-        lists.style.overflow = "scroll";
-        lists.style.whiteSpace = "nowrap";
     }
 }
 
@@ -243,7 +258,7 @@ function enableResetButtonWrapper() {
 }
 
 // *********************
-// *** MOFIFICATIONS ***
+// *** MODIFICATIONS ***
 // *********************
 
 function startNewList() {
@@ -438,25 +453,30 @@ function checkEditAccess() {
 // *** LOAD/START ***
 // ******************
 
+function initialLoadChecks() {
+    getDarkModePref();
+    updateDarkModeView();
+    setTimeout(checkEditAccess, 100);
+}
+
 function load() {
     getAllLists(loadPage);
 }
 
 function loadPage(serverResponse) {
     vocabLists = serverResponse;
-    generateListsHTML();
+    generateListsDropdown();
     if (list == "") getInitialList();
-    getDarkModePref();
-    updateDarkModeView();
     start();
 }
 
 function getInitialList() {
-    list = Object.keys(vocabLists)[0];
+    list = sortListIdsByTitle()[0];
 }
 
 function start() {
     updateActiveButton("lists", list);
+    document.getElementById("list-dropdown").value = list;
     if (createMode) {
         updateEditTitle(list);
         document.getElementById("resetbutton").style.display = "none";
@@ -472,6 +492,10 @@ function start() {
     showEditMode();
     toggleResetChangesButton(true);
 }
+
+// *****************
+// *** DARK MODE ***
+// *****************
 
 function getDarkModePref() {
     let prefs = localStorage.getItem("prefs")
