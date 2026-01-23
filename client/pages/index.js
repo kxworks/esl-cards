@@ -91,6 +91,43 @@ function generateListsHTML() {
     }
 }
 
+function sortListIdsByTitle() {
+    let result = [];
+    let titles = [];
+    let titlesToIdsMap = {};
+    for (let list in vocabLists) {
+        let title = vocabLists[list].title;
+        titles.push(title);
+        titlesToIdsMap[title] = list;
+    }
+    let sortedTitles = titles.sort();
+    sortedTitles.forEach((title) => {
+        let id = titlesToIdsMap[title];
+        result.push(id);
+    });
+    return result;
+}
+
+function generateListsDropdown() {
+    document.getElementById("lists").innerHTML = "";
+    // lists dropdown
+    let select = document.createElement("select");
+    select.setAttribute("id", "list-dropdown");
+    select.addEventListener("change", function(event) { changeList(event.target.value); });
+    select.innerHTML += '<option value="all">All Words</option>';
+    select.innerHTML += '<option value="saved" disabled>My Saved Words</option>';
+    let sortedVocabListIds = sortListIdsByTitle();
+    sortedVocabListIds.forEach(id => {
+        select.innerHTML += '<option value="'+id+'">'+vocabLists[id].title+'</option>';
+    });
+    document.getElementById("lists").appendChild(select);
+    // saved button
+    //let savedSpan = document.createElement("span");
+    //let disabled = (savedCards == [] ? "disabled" : "");
+    //document.getElementById("lists").innerHTML += '<span>&nbsp;|&nbsp;</span>'; //<button id="saved" onclick="changeList(event.target.id)" '+disabled+'>My Saved Words</button>';
+    //document.getElementById("lists").appendChild(savedSpan);
+}
+
 function getList(id) {
     if (id == "all") return allCards;
     else if (id == "saved") return savedCards;
@@ -121,22 +158,6 @@ function updateActiveButton(buttonListDivId, buttonId) {
     }
 }
 
-function toggleShowAllLists() {
-    let lists = document.getElementById("lists");
-    let button = document.getElementById("showall-button");
-    showAll = !showAll;
-    if (showAll) {
-        button.innerHTML = "Collapse";
-        lists.style.overflow = "visible";
-        lists.style.whiteSpace = "wrap";
-    }
-    else {
-        button.innerHTML = "Show all";
-        lists.style.overflow = "scroll";
-        lists.style.whiteSpace = "nowrap";
-    }
-}
-
 // ******************
 // *** SAVE CARDS ***
 // ******************
@@ -147,9 +168,14 @@ function getSaved() {
 }
 
 function updateSaved() {
-    let savedButton = document.getElementById("saved");
-    if (savedCards.length > 0) savedButton.removeAttribute("disabled");
-    else savedButton.setAttribute("disabled", "true");
+    // let savedButton = document.getElementById("saved");
+    // if (savedCards.length > 0) savedButton.removeAttribute("disabled");
+    // else savedButton.setAttribute("disabled", "true");
+
+    let savedOption = document.getElementById("list-dropdown").querySelector("option[value='saved']");
+    if (savedCards.length > 0) savedOption.removeAttribute("disabled");
+    else savedOption.setAttribute("disabled", "true");
+
 }
 
 function saveCard(event) {
@@ -185,7 +211,7 @@ function removeSavedCard(baseHint, baseAnswer) {
     let result = [];
     let result2 = savedCards.filter(card => (card.base !== baseHint && card.target !== baseAnswer));
     savedCards.forEach((card) => {
-        if (card.base == baseHint && card.target == baseAnswer) console.log("skipping", baseHint, card.base);
+        if (card.base == baseHint && card.target == baseAnswer) return;
         else result.push({ "base": card.base, "target": card.target });
     });
     savedCards = result2;
@@ -349,7 +375,8 @@ function loadPage(serverResponse) {
     getPrefs();
     generateLanguageButtons();
     generateModeButtons();
-    generateListsHTML();
+    //generateListsHTML();
+    generateListsDropdown();
     createAllList();
     getSaved();
     updateSaved();
@@ -359,7 +386,7 @@ function loadPage(serverResponse) {
 }
 
 function start() {
-    updateActiveButton("lists", list)
+    updateActiveButton("lists", list);
     currentList = getList(list);
     createResultList();
     correctSoFar = 0;

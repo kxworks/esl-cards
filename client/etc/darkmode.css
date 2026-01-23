@@ -3,8 +3,9 @@
     color: white !important;
 }
 
-button {
+button, select, select:focus {
     border-color: white !important;
+    outline-color: transparent;
 }
 
 button.active {
