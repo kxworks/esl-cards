@@ -116,6 +116,10 @@ function generateListsDropdown() {
     document.getElementById("lists").appendChild(savedButton);
     document.getElementById("lists").appendChild(spacer);
     document.getElementById("lists").appendChild(select);
+    let down = document.createElement("span");
+    down.id = "dropdown-chevron";
+    down.innerHTML = "&#8964;";
+    document.getElementById("lists").appendChild(down);
 }
 
 function getList(id) {

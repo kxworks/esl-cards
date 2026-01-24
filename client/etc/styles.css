@@ -23,7 +23,7 @@ button, select {
 }
 
 select {
-    padding: 10px 10px 10px 5px;
+    padding: 10px;
 }
 
 button.active {
@@ -44,6 +44,20 @@ a {
 hr {
     width: 90%;
     margin-left: 0;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 40px;
+
+}
+
+#dropdown-chevron {
+    position: absolute; 
+    margin-top: 0.25em;
+    margin-left: -20px; 
+    background-color: transparent !important;
 }
 
 /****************/
