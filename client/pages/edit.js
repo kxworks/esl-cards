@@ -84,6 +84,22 @@ function updateActiveButton(buttonListDivId, buttonId) {
     }
 }
 
+// ***********
+// *** URL ***
+// ***********
+
+function addCurrentListToURL() {
+    const PAGE_TITLE = "ESL Flashcards"
+    window.history.pushState({}, PAGE_TITLE, "?list=" + list);
+}
+
+function readListFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    let urlList = params.get('list');
+    if (urlList == "saved") return null;
+    return urlList;
+}
+
 function updateEditTitle(name) {
     let text = "";
     if (name) {
@@ -471,6 +487,7 @@ function loadPage(serverResponse) {
     vocabLists = serverResponse;
     generateListsDropdown();
     if (list == "") getInitialList();
+    if (readListFromURL()) list = readListFromURL();
     start();
 }
 
@@ -480,6 +497,7 @@ function getInitialList() {
 
 function start() {
     updateActiveButton("lists", list);
+    addCurrentListToURL();
     document.getElementById("list-dropdown").value = list;
     if (createMode) {
         updateEditTitle(list);
