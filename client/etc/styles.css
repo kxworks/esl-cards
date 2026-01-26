@@ -47,8 +47,9 @@ hr {
 }
 
 select {
-    appearance: none;
-    -webkit-appearance: none;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
     padding-right: 40px;
 
 }
