@@ -2,20 +2,14 @@
 // *** MANAGING STATE ***
 // **********************
 
-const BASE_LANG = { name: "English", dialect: "en-US" };
-const TARGET_LANG = { name: "Spanish", dialect: "es-MX" };
 let view = BASE_LANG.name;
-let list = "all";
 let mode = "quiz";
 let cardIdx = -1;
 let showSettings = false;
-let currentList = [];
 let currentResults = [];
 let correctSoFar = 0;
 let allCards = [];
 let savedCards = [];
-let vocabLists = {};
-let darkMode = false;
 
 // **************
 // *** EVENTS ***
@@ -76,58 +70,6 @@ function speakTextOnCard(event) {
 // *** WORD LISTS ***
 // ******************
 
-function sortListIdsByTitle() {
-    let result = [];
-    let titles = [];
-    let titlesToIdsMap = {};
-    for (let list in vocabLists) {
-        let title = vocabLists[list].title;
-        titles.push(title);
-        titlesToIdsMap[title] = list;
-    }
-    let sortedTitles = titles.sort();
-    sortedTitles.forEach((title) => {
-        let id = titlesToIdsMap[title];
-        result.push(id);
-    });
-    return result;
-}
-
-function generateListsDropdown() {
-    document.getElementById("lists").innerHTML = "";
-    // lists dropdown
-    let select = document.createElement("select");
-    select.setAttribute("id", "list-dropdown");
-    select.addEventListener("change", function(event) { changeList(event.target.value); });
-    select.innerHTML += '<option value="all">All Words</option>';
-    let sortedVocabListIds = sortListIdsByTitle();
-    sortedVocabListIds.forEach(id => {
-        select.innerHTML += '<option value="'+id+'">'+vocabLists[id].title+'</option>';
-    });
-    select.innerHTML += '<option value="saved" disabled></option>';
-    // spacer + saved
-    let spacer = document.createElement("span");
-    spacer.innerHTML = "&nbsp;&nbsp;|&nbsp;&nbsp;";
-    let savedButton = document.createElement("button");
-    savedButton.id = "saved";
-    savedButton.innerHTML = "Saved";
-    savedButton.addEventListener("click", function(event) { changeList(event.target.id) });
-    // add to page
-    document.getElementById("lists").appendChild(savedButton);
-    document.getElementById("lists").appendChild(spacer);
-    document.getElementById("lists").appendChild(select);
-    let down = document.createElement("span");
-    down.id = "dropdown-chevron";
-    down.innerHTML = "&#8964;";
-    document.getElementById("lists").appendChild(down);
-}
-
-function getList(id) {
-    if (id == "all") return allCards;
-    else if (id == "saved") return savedCards;
-    return vocabLists[id].vocab;
-}
-
 function createAllList() {
     let result = [];
     for (let list in vocabLists) {
@@ -139,33 +81,23 @@ function createAllList() {
     allCards = result;
 }
 
-function changeList(option) {
+function getListIndexPage(id) {
+    if (id == "all") return allCards;
+    else if (id == "saved") return savedCards;
+    return vocabLists[id].vocab;
+}
+
+function changeListIndexPage(option) {
     list = option;
     start();
 }
 
-function updateActiveButton(buttonListDivId, buttonId) {
-    let buttons = document.getElementById(buttonListDivId).children;
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].className = "";
-        if (buttons[i].id == buttonId) buttons[i].className = "active";
-    }
+function dropdownSelectCallbackIndexPage(event) {
+    changeListIndexPage(event.target.value);
 }
 
-// ***********
-// *** URL ***
-// ***********
-
-function addCurrentListToURL() {
-    const PAGE_TITLE = "ESL Flashcards"
-    window.history.pushState({}, PAGE_TITLE, "?list=" + list);
-}
-
-function readListFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    let urlList = params.get('list');
-    if (urlList == "saved") return null;
-    return urlList;
+function actionButtonCallbackIndexPage(event) {
+    changeListIndexPage(event.target.id); 
 }
 
 // ******************
@@ -181,11 +113,6 @@ function updateSaved() {
     let savedButton = document.getElementById("saved");
     if (savedCards.length > 0) savedButton.removeAttribute("disabled");
     else savedButton.setAttribute("disabled", "true");
-
-    // let savedOption = document.getElementById("list-dropdown").querySelector("option[value='saved']");
-    // if (savedCards.length > 0) savedOption.removeAttribute("disabled");
-    // else savedOption.setAttribute("disabled", "true");
-
 }
 
 function saveCard(event) {
@@ -382,11 +309,12 @@ function load() {
 
 function loadPage(serverResponse) {
     vocabLists = serverResponse;
+    list = "all";
     getPrefs();
     updateDarkModeView();
     generateLanguageButtons();
     generateModeButtons();
-    generateListsDropdown();
+    generateListsDropdown(INDEX_PAGE, dropdownSelectCallbackIndexPage, actionButtonCallbackIndexPage);
     createAllList();
     getSaved();
     updateSaved();
@@ -399,7 +327,7 @@ function start() {
     updateActiveButton("lists", list);
     addCurrentListToURL();
     document.getElementById("list-dropdown").value = list;
-    currentList = getList(list);
+    currentList = getListIndexPage(list);
     createResultList();
     correctSoFar = 0;
     cardIdx = 0;
@@ -489,28 +417,8 @@ function updateModeView() {
     };
 }
 
-// *****************
-// *** DARK MODE ***
-// *****************
-
 function changeDarkMode(enabled) {
     darkMode = enabled;
     updateDarkModeView();
     savePrefs();
-}
-
-function updateDarkModeView() {
-    if (darkMode) {
-        let style = document.createElement("link");
-        style.setAttribute("rel", "stylesheet");
-        style.setAttribute("href", "./client/etc/darkmode.css");
-        style.setAttribute("id", "darkmodeStyles");
-        document.head.appendChild(style);
-    }
-    else {
-        let darkModeTag = document.getElementById("darkmodeStyles");
-        if (darkModeTag) document.head.removeChild(darkModeTag);
-    }
-    let activeButtonId = darkMode ? "darkbutton" : "lightbutton";
-    updateActiveButton("darkmode", activeButtonId);
 }

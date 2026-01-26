@@ -2,71 +2,20 @@
 // *** MANAGING STATE ***
 // **********************
 
-const BASE_LANG = { name: "English", dialect: "en-US" };
-const TARGET_LANG = { name: "Spanish", dialect: "es-MX" };
-let list = "";
-let currentList = [];
 let editMode = "table";
 let createMode = false;
 let selectedRow;
-let vocabLists;
 let changesDetected = false;
-let darkMode = false;
 
 // ******************
 // *** WORD LISTS ***
 // ******************
 
-function sortListIdsByTitle() {
-    let result = [];
-    let titles = [];
-    let titlesToIdsMap = {};
-    for (let list in vocabLists) {
-        let title = vocabLists[list].title;
-        titles.push(title);
-        titlesToIdsMap[title] = list;
-    }
-    let sortedTitles = titles.sort();
-    sortedTitles.forEach((title) => {
-        let id = titlesToIdsMap[title];
-        result.push(id);
-    });
-    return result;
-}
-
-function generateListsDropdown() {
-    document.getElementById("lists").innerHTML = "";
-    // lists dropdown
-    let select = document.createElement("select");
-    select.setAttribute("id", "list-dropdown");
-    select.addEventListener("change", function(event) { changeList(event.target.value); });
-    let sortedVocabListIds = sortListIdsByTitle();
-    sortedVocabListIds.forEach(id => {
-        select.innerHTML += '<option value="'+id+'">'+vocabLists[id].title+'</option>';
-    });
-    select.innerHTML += '<option value="create" disabled></option>';
-    // spacer + create
-    let spacer = document.createElement("span");
-    spacer.innerHTML = "&nbsp;&nbsp;|&nbsp;&nbsp;";
-    let createNew = document.createElement("button");
-    createNew.id = "create";
-    createNew.innerHTML = "+ Create List";
-    createNew.addEventListener("click", startNewList);
-    // add to page
-    document.getElementById("lists").appendChild(createNew);
-    document.getElementById("lists").appendChild(spacer);
-    document.getElementById("lists").appendChild(select);
-    let down = document.createElement("span");
-    down.id = "dropdown-chevron";
-    down.innerHTML = "&#8964;";
-    document.getElementById("lists").appendChild(down);
-}
-
-function getList(id) {
+function getListEditPage(id) {
     if (id) return vocabLists[id].vocab;
 }
 
-function changeList(option) {
+function changeListEditPage(option) {
     if (changesDetected) {
         let confirmChange = confirm("Are you sure you want to change list? Any unsaved changes will be lost.");
         if (!confirmChange) return false;
@@ -76,52 +25,12 @@ function changeList(option) {
     start();
 }
 
-function updateActiveButton(buttonListDivId, buttonId) {
-    let buttons = document.getElementById(buttonListDivId).children;
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].className = "";
-        if (buttons[i].id == buttonId) buttons[i].className = "active";
-    }
+function dropdownSelectCallbackEditPage(event) {
+    changeListEditPage(event.target.value);
 }
 
-// ***********
-// *** URL ***
-// ***********
-
-function addCurrentListToURL() {
-    const PAGE_TITLE = "ESL Flashcards"
-    window.history.pushState({}, PAGE_TITLE, "?list=" + list);
-}
-
-function readListFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    let urlList = params.get('list');
-    if (urlList == "saved") return null;
-    return urlList;
-}
-
-function updateEditTitle(name) {
-    let text = "";
-    if (name) {
-        document.getElementById("editlist").style.display = "block";
-        if (createMode) { text = "Create list: "; name = ""; }
-        else text = "Edit list: ";
-        let input = '<input id="editlistname" type="text" placeholder="Enter list name" value="'+name+'"/>';
-        document.getElementById("editlist").innerHTML = text + "&nbsp;" + input;
-    }
-}
-
-// This method is based on the method found here:
-// https://medium.com/@python-javascript-php-html-css/how-to-effectively-generate-guids-in-javascript-53d56095ad3b
-function generateGUID() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-               .toString(16)
-               .substring(1);
-  }
-  let newGUID = s4() + '-' + s4() + '-' + s4() + '-' + s4();
-  if (Object.keys(vocabLists).includes(newGUID)) return generateGUID();
-  return newGUID;
+function actionButtonCallbackEditPage(event) {
+    startNewList(); 
 }
 
 // *****************
@@ -277,15 +186,39 @@ function enableResetButtonWrapper() {
     }
 }
 
-// *********************
-// *** MODIFICATIONS ***
-// *********************
+// ***********************
+// *** MODIFYING LISTS ***
+// ***********************
 
 function startNewList() {
     createMode = true;
     list = "create";
     currentList = [];
     start();
+}
+
+function updateEditTitle(name) {
+    let text = "";
+    if (name) {
+        document.getElementById("editlist").style.display = "block";
+        if (createMode) { text = "Create list: "; name = ""; }
+        else text = "Edit list: ";
+        let input = '<input id="editlistname" type="text" placeholder="Enter list name" value="'+name+'"/>';
+        document.getElementById("editlist").innerHTML = text + "&nbsp;" + input;
+    }
+}
+
+// This method is based on the method found here:
+// https://medium.com/@python-javascript-php-html-css/how-to-effectively-generate-guids-in-javascript-53d56095ad3b
+function generateGUID() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+               .toString(16)
+               .substring(1);
+  }
+  let newGUID = s4() + '-' + s4() + '-' + s4() + '-' + s4();
+  if (Object.keys(vocabLists).includes(newGUID)) return generateGUID();
+  return newGUID;
 }
 
 function tempSaveChanges() {
@@ -331,6 +264,10 @@ function getTextTempList() {
     }
     return result;
 }
+
+// **********************
+// *** SUBMIT / RESET ***
+// **********************
 
 function areListsEqual(list1, list2) {
     // Initial checks
@@ -387,7 +324,7 @@ function submitChanges() {
 }
 
 function resetChanges() {
-    currentList = getList(list);
+    currentList = getListEditPage(list);
     showEditMode();
     toggleResetChangesButton(true);
 }
@@ -485,7 +422,7 @@ function load() {
 
 function loadPage(serverResponse) {
     vocabLists = serverResponse;
-    generateListsDropdown();
+    generateListsDropdown(EDIT_PAGE, dropdownSelectCallbackEditPage, actionButtonCallbackEditPage);
     if (list == "") getInitialList();
     if (readListFromURL()) list = readListFromURL();
     start();
@@ -507,7 +444,7 @@ function start() {
     else {
         document.getElementById("resetbutton").style.display = "initial";
         document.getElementById("deletelistbutton").style.display = "block";
-        currentList = getList(list);
+        currentList = getListEditPage(list);
         let title = (list ? vocabLists[list].title : "");
         if (title) updateEditTitle(title);
     }
@@ -524,19 +461,5 @@ function getDarkModePref() {
     if (prefs) { 
         prefsObj = JSON.parse(prefs);
         if (prefsObj.darkMode) darkMode = prefsObj.darkMode;
-    }
-}
-
-function updateDarkModeView() {
-    if (darkMode) {
-        let style = document.createElement("link");
-        style.setAttribute("rel", "stylesheet");
-        style.setAttribute("href", "./client/etc/darkmode.css");
-        style.setAttribute("id", "darkmodeStyles");
-        document.head.appendChild(style);
-    }
-    else {
-        let darkModeTag = document.getElementById("darkmodeStyles");
-        if (darkModeTag) document.head.removeChild(darkModeTag);
     }
 }
