@@ -427,10 +427,7 @@ function loadPage(serverResponse) {
     vocabLists = serverResponse;
     generateListsDropdown(EDIT_PAGE, dropdownSelectCallbackEditPage, actionButtonCallbackEditPage);
     if (list == "") getInitialList();
-    if (readListFromURL()) { 
-        list = readListFromURL();
-        if (!isListIdValid(list)) getInitialList();
-    }
+    if (readListFromURL() && isListIdValid(readListFromURL())) list = readListFromURL();
     start();
 }
 
