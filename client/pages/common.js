@@ -32,6 +32,10 @@ function sortListIdsByTitle() {
     return result;
 }
 
+function isListIdValid(listId) {
+    return Object.keys(vocabLists).includes(listId);
+}
+
 // ********************
 // *** UPDATE VIEWS ***
 // ********************

@@ -203,7 +203,7 @@ function updateEditTitle(name) {
         document.getElementById("editlist").style.display = "block";
         if (createMode) { text = "Create list: "; name = ""; }
         else text = "Edit list: ";
-        let input = '<input id="editlistname" type="text" placeholder="Enter list name" value="'+name+'"/>';
+        let input = '<input id="editlistname" type="text" placeholder="Enter list name" value="'+name+'" oninput="enableResetButtonWrapper()"/>';
         document.getElementById("editlist").innerHTML = text + "&nbsp;" + input;
     }
 }
@@ -325,6 +325,8 @@ function submitChanges() {
 
 function resetChanges() {
     currentList = getListEditPage(list);
+    let editListTitle = document.getElementById("editlistname");
+    if (editListTitle) editListTitle.value = vocabLists[list].title;
     showEditMode();
     toggleResetChangesButton(true);
 }
@@ -388,6 +390,7 @@ function deleteCallback() {
         let newListIdx = lastListIdx-1;
         if (newListIdx < 0) newListIdx = 0;
         list = keys[newListIdx];
+        addCurrentListToURL();
     }
     load();
 }
@@ -424,7 +427,10 @@ function loadPage(serverResponse) {
     vocabLists = serverResponse;
     generateListsDropdown(EDIT_PAGE, dropdownSelectCallbackEditPage, actionButtonCallbackEditPage);
     if (list == "") getInitialList();
-    if (readListFromURL()) list = readListFromURL();
+    if (readListFromURL()) { 
+        list = readListFromURL();
+        if (!isListIdValid(list)) getInitialList();
+    }
     start();
 }
 
