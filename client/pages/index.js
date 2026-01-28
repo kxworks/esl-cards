@@ -321,7 +321,7 @@ function loadPage(serverResponse) {
     updateModeView();
     if (readListFromURL()) { 
         list = readListFromURL();
-        if (!isListIdValid(list)) getInitialList();
+        if (!isListIdValid(list)) list = "all";
     }    
     start();
 }

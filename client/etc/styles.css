@@ -112,7 +112,7 @@ select {
     display: inline-block;
 }
 
-#pagenav {
+.pagenav {
     display: inline-block;
     font-weight: normal;
     font-size: 0.875rem;
