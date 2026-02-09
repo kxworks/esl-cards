@@ -313,6 +313,25 @@ table input {
     padding-left: 7px;
 }
 
+/* ************ */
+/* *** QUIZ *** */
+/* ************ */
+
+#quizanswer input {
+    background-color: transparent;
+    color: black;
+    border: 1px solid #777;
+    border-radius: 5px;
+    padding: 10px 15px;
+    display: inline-block;
+    width: 210px;
+}
+
+#quiz-dates {
+    margin-top: -10px;
+    margin-bottom: 25px;
+}
+
 /* *********************** */
 /* *** SMALLER SCREENS *** */
 /* *********************** */

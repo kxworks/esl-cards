@@ -9,11 +9,44 @@
         <script src="./client/pages/common.js" defer></script>
         <script src="./client/pages/quiz.js" defer></script>
     </head>
-    <body>
+    <body onload="load()">
         <h1>Flashcards! <a class="pagenav link-button" href="./index.html">Back to home</a></h1>
-        <div id="wordlists">
-            <h2>Daily Quizzes</h2>
-            <div id="lists"></div>
+        <div id="settings-section">
+            <button id="hide-settings" onclick="toggleSettings()">Settings</button>
+            <div id="settings">
+                <h2>Settings</h2>
+                <h3>Card view</h3>
+                <div id="cardview"></div>
+                <h3>Display mode</h3>
+                <div id="darkmode">
+                    <button id="lightbutton" onclick="changeDarkMode(false)">Light mode</button>
+                    <button id="darkbutton" onclick="changeDarkMode(true)">Dark mode</button>
+                </div>
+                <br/>
+            </div>
+        </div>
+        <div id="flashcards">
+            <h2>Today's Daily Quiz</h2>
+            <p id="quiz-dates"><span id="todays-date">...</span>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="pagenav link-button" href="#">Past quizzes</a></p>
+            <div id="quiznav">
+                <button id="prev" onclick="changeCard(-1)">Previous</button>
+                <button id="next" onclick="changeCard(1)">Next</button>
+                &nbsp;&nbsp;
+                <span id="navstatus">? _ _ _ _ _ _ _ _ _ _</span>
+                <br/><br/>
+            </div>
+            <div id="flashcard" onclick="showCardAnswer()">
+                <span id="cardstatus"></span>
+                <button id="savecard" onclick="saveCard(event)">Save</button>
+                <p id="hint">&nbsp;</p>
+                <p id="answer">&nbsp;</p>
+                <button id="main-audio" class='audio-button' onclick="speakTextOnCard(event)">&#128266;</button>
+            </div>
+            <div id="quizanswer">
+                <input placeholder="Answer"/>
+                <button>Submit</button>
+                <span>&nbsp;&nbsp;</span>
+            </div>
         </div>
         <br/><br/>
     </body>
