@@ -1,0 +1,16 @@
+{
+    "20260209": {
+        "vocab": [
+            {"base":"Hello","target":"Hola"},
+            {"base":"Hello2","target":"Hola"},
+            {"base":"Hello3","target":"Hola"},
+            {"base":"Hello4","target":"Hola"},
+            {"base":"Hello5","target":"Hola"},
+            {"base":"Hello6","target":"Hola"},
+            {"base":"Hello7","target":"Hola"},
+            {"base":"Hello8","target":"Hola"},
+            {"base":"Hello9","target":"Hola"},
+            {"base":"Hello10","target":"Hola"}
+        ]
+    }
+}

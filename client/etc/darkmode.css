@@ -21,3 +21,11 @@ button:disabled {
 #flashcard.answer, .answer * {
     background-color: #333 !important;
 }
+
+.navstatus-char {
+    border-bottom: 1px solid white !important;
+}
+
+#answer-box {
+    border-color: white !important;
+}
