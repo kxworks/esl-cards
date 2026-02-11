@@ -1,6 +1,6 @@
 <?php
 
-    require("./common.php");
+    require("../util/common.php");
     $FILE_LOCATION = "../data/quizzes.json";
 
     // **************

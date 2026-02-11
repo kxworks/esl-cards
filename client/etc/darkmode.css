@@ -12,7 +12,7 @@ button.active {
     background-color: #616161 !important;
 }
 
-button:disabled {
+button:disabled, input:disabled {
     background-color: #222 !important;
     color: #ccc !important;
     border-color: #ccc !important;

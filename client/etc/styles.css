@@ -30,7 +30,7 @@ button.active {
     background-color: rgb(186, 186, 186);
 }
 
-button:disabled {
+button:disabled, #quizanswer input:disabled {
     background-color: #eee;
     color: gray;
     border-color: lightgray;

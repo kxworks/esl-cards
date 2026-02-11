@@ -4,7 +4,7 @@
     // *** SHARED FUNCTIONS ***
     // ************************
 
-    // Read current file
+    // Read current file into assoc array
     function getJsonDataFromFile($fileLocation) {
         $savedData = file_get_contents($fileLocation);
         return json_decode($savedData, true);

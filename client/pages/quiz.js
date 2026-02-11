@@ -6,26 +6,41 @@ let view = BASE_LANG.name;
 let cardIdx = -1;
 let showSettings = false;
 let currentResults = [];
+const NUMBER_OF_QUESTIONS = 10;
+let completed = false;
 
 // ********************
 // *** LOAD / START ***
 // ********************
 
 function initialLoad() {
-    let currentDate = getCurrentDate(true);
-    list = currentDate;
-    getQuiz(currentDate, loadPageWithData);
+    if (readListFromURL()) { // Add valid check
+        list = readListFromURL();
+    }
+    else {
+        let currentDate = getCurrentDate(true);
+        list = currentDate;
+    }
+    getQuiz(list, loadPageWithData);
 }
 
 function loadPageWithData(serverResponse) {
-    if (serverResponse.vocab) currentList = serverResponse.vocab;
+    addCurrentListToURL();
     updatePageDate(getCurrentDate());
     generateSettings();
-    start();
+    if (serverResponse.vocab) { 
+        currentList = serverResponse.vocab;
+        start();
+    }
+    else {
+        console.log("no data");
+        // Add logic to get most recent
+        document.querySelectorAll("#answer-box, #flashcards button").forEach(element => element.setAttribute("disabled", "true"));
+        return;
+    }
 }
 
 function start() {
-    addCurrentListToURL();
     createResultList();
     cardIdx = 0;
     showCard();
@@ -46,12 +61,28 @@ addEventListener("keydown", (event) => {
 // *** HELPERS ***
 // ***************
 
+function formatMonth(date, sysFormat) {
+    if (sysFormat) {
+        let month = (date.getMonth()+1);
+        if (month < 10) month = "0" + month;
+        return month;
+    }
+    else {
+        let month = date.toString().split(" ")[1];
+        if (month !== "May") month = month + ".";
+        return month;
+    }
+}
+
 function getCurrentDate(sysFormat=false) {
     let date = new Date();
-    if (sysFormat) return "20260209";
+    let dateValues = date.toString().split(" ");
+    if (sysFormat) { 
+        //return `${dateValues[3]}${formatMonth(date, true)}${dateValues[2]}`
+        return "20260209";
+    }
     else {
-        let dateValues = date.toString().split(" ");
-        return `${dateValues[1]}. ${dateValues[2]}, ${dateValues[3]}`;
+        return `${formatMonth(date, false)} ${dateValues[2]}, ${dateValues[3]}`;
     }
 }
 
@@ -83,6 +114,12 @@ function getCompletedSoFar() {
     return count;
 }
 
+function getNumCorrect() {
+    let count = 0;
+    currentResults.forEach(result => { if (result == true) count++ });
+    return count;
+}
+
 function jumpToCard(index) {
     if (currentResults[index] != null || index == getCompletedSoFar()) {
         cardIdx = index;
@@ -95,8 +132,19 @@ function submitGuess() {
     let realAnswer = currentList[cardIdx].target;
     let gotItRight = false;
     if (userAnswer.toLowerCase() == realAnswer.toLowerCase()) gotItRight = true;
-    if (gotItRight) recordResult(true);
-    else recordResult(false);
+    if (gotItRight) { alert("Nice one! \"" + realAnswer + "\" is correct."); recordResult(true); }
+    else { alert("Oops, that's not right. The correct answer is \"" + realAnswer + "\"."); recordResult(false); }
+    changeCard(1, false);
+}
+
+function showCompleteMessage() {
+    let numCorrect = getNumCorrect();
+    let message = "You've finished this quiz! You got "+ numCorrect + " out of " + NUMBER_OF_QUESTIONS + " correct. ";
+    if (numCorrect == NUMBER_OF_QUESTIONS) message += "Keep up the good work!";
+    else if (numCorrect >= (NUMBER_OF_QUESTIONS * .8)) message += "Keep practicing.";
+    else if (numCorrect <= (NUMBER_OF_QUESTIONS * .5)) message += "You might want to practice more...";
+    alert(message);
+    document.getElementById("submit-button").setAttribute("disabled", "true");
 }
 
 
@@ -163,8 +211,10 @@ function showCard() {
     saveButton.style.visibility = "visible";
     document.getElementById("answer").style.display = "none";
     document.getElementById("navstatus").innerHTML = generateNavStatus();
-    if ((cardIdx + 1) > getCompletedSoFar()) document.getElementById("next").setAttribute("disabled", "true");
+    if ((cardIdx + 1) > getCompletedSoFar() || cardIdx == (NUMBER_OF_QUESTIONS-1)) document.getElementById("next").setAttribute("disabled", "true");
     else document.getElementById("next").removeAttribute("disabled", "true");
+    if (cardIdx == 0) document.getElementById("prev").setAttribute("disabled", "true");
+    else document.getElementById("prev").removeAttribute("disabled", "true");
     document.getElementById("answer-box").value = "";
 
     // Display data
@@ -201,7 +251,6 @@ function recordResult(gotItRight) {
         else return;
     }
     else currentResults[cardIdx] = false;
-    changeCard(1, false);
 }
 
 function changeCard(option, restrictNext) {
@@ -209,7 +258,13 @@ function changeCard(option, restrictNext) {
         if (option == 1 & restrictNext && (cardIdx + option) > getCompletedSoFar()) return;
         cardIdx += option;
     }
-    else if (option == 1 && cardIdx == currentList.length-1) cardIdx = currentList.length-1;
+    else if (option == 1 && cardIdx == currentList.length-1) {
+        cardIdx = currentList.length-1;
+        if (!completed) {
+            completed = true;
+            showCompleteMessage();
+        }
+    }
     else if (option == -1 && cardIdx == 0) cardIdx = 0;
     showCard();
 }
