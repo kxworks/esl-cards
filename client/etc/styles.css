@@ -71,12 +71,6 @@ select {
     font-size: 0.9em;
 }
 
-#cardstatus {
-    position: absolute;
-    font-size: 2em;
-    margin-left: -150px;
-}
-
 #reviewmode {
     display: none;
 }
@@ -214,6 +208,21 @@ select {
     margin-bottom: 7px;
 }
 
+#cardstatus {
+    position: absolute;
+    font-size: 2em;
+    margin-left: -150px;
+}
+
+#cardnumber {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+    color: darkgray;
+    font-size: 0.875em;
+}
+
+
 /* ************ */
 /* *** EDIT *** */
 /* ************ */
@@ -332,6 +341,10 @@ table input {
     margin-bottom: 25px;
 }
 
+#navstatus, #navstatus * {
+    user-select: none;
+}
+
 .navstatus-char {
     display: inline-block;
     margin: auto 2px; 
@@ -340,10 +353,15 @@ table input {
     overflow: hidden;
     border-bottom: 1px solid black;
     color: black;
+    user-select: none;
 }
 
 .char-completed {
     cursor: pointer;
+}
+
+#submitted-answer {
+    color: #333;
 }
 
 /* *********************** */

@@ -41,11 +41,14 @@
                 <p id="hint">&nbsp;</p>
                 <p id="answer">&nbsp;</p>
                 <button id="main-audio" class='audio-button' onclick="speakTextOnCard(event)">&#128266;</button>
+                <span id="cardnumber"></span>
             </div>
             <div id="quizanswer">
-                <input id="answer-box" placeholder="Answer"/>
-                <button id="submit-button" onclick="submitGuess()">Submit</button>
-                <span>&nbsp;&nbsp;</span>
+                <div id="answer-field">
+                    <input id="answer-box" placeholder="Answer"/>
+                    <button id="submit-button" onclick="submitGuess()">Submit</button>
+                </div>
+                <p id="submitted-answer"></p>
             </div>
         </div>
         <br/><br/>

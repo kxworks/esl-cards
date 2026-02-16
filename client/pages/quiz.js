@@ -6,6 +6,7 @@ let view = BASE_LANG.name;
 let cardIdx = -1;
 let showSettings = false;
 let currentResults = [];
+let givenAnswers = [];
 const NUMBER_OF_QUESTIONS = 10;
 let completed = false;
 
@@ -44,6 +45,7 @@ function start() {
     createResultList();
     cardIdx = 0;
     showCard();
+    document.getElementById("answer-box").focus();
 }
 
 // *************
@@ -78,8 +80,7 @@ function getCurrentDate(sysFormat=false) {
     let date = new Date();
     let dateValues = date.toString().split(" ");
     if (sysFormat) { 
-        //return `${dateValues[3]}${formatMonth(date, true)}${dateValues[2]}`
-        return "20260209";
+        return `${dateValues[3]}${formatMonth(date, true)}${dateValues[2]}`
     }
     else {
         return `${formatMonth(date, false)} ${dateValues[2]}, ${dateValues[3]}`;
@@ -131,10 +132,17 @@ function submitGuess() {
     let userAnswer = document.getElementById("answer-box").value;
     let realAnswer = currentList[cardIdx].target;
     let gotItRight = false;
-    if (userAnswer.toLowerCase() == realAnswer.toLowerCase()) gotItRight = true;
+    if (checkAnswer(userAnswer, realAnswer)) gotItRight = true;
     if (gotItRight) { alert("Nice one! \"" + realAnswer + "\" is correct."); recordResult(true); }
     else { alert("Oops, that's not right. The correct answer is \"" + realAnswer + "\"."); recordResult(false); }
+    givenAnswers[cardIdx] = userAnswer;
     changeCard(1, false);
+}
+
+function checkAnswer(userAnswer, realAnswer) {
+    let cleanedUserAnswer = userAnswer.toLowerCase().replaceAll(/(\?|\.|\,|\!|\¿|\¡|\/|\(.*\))+/g, "").trim();
+    let cleanedRealAnswer = realAnswer.toLowerCase().replaceAll(/(\?|\.|\,|\!|\¿|\¡|\/|\(.*\))+/g, "").trim();
+    return cleanedUserAnswer == cleanedRealAnswer;
 }
 
 function showCompleteMessage() {
@@ -142,7 +150,7 @@ function showCompleteMessage() {
     let message = "You've finished this quiz! You got "+ numCorrect + " out of " + NUMBER_OF_QUESTIONS + " correct. ";
     if (numCorrect == NUMBER_OF_QUESTIONS) message += "Keep up the good work!";
     else if (numCorrect >= (NUMBER_OF_QUESTIONS * .8)) message += "Keep practicing.";
-    else if (numCorrect <= (NUMBER_OF_QUESTIONS * .5)) message += "You might want to practice more...";
+    else if (numCorrect < (NUMBER_OF_QUESTIONS * .8)) message += "You might want to practice more...";
     alert(message);
     document.getElementById("submit-button").setAttribute("disabled", "true");
 }
@@ -196,6 +204,7 @@ function createResultList() {
     let listLength = currentList.length;
     for (let i = 0; i < listLength; i++) {
         currentResults.push(null);
+        givenAnswers.push(null);
     }
 }
 
@@ -216,6 +225,7 @@ function showCard() {
     if (cardIdx == 0) document.getElementById("prev").setAttribute("disabled", "true");
     else document.getElementById("prev").removeAttribute("disabled", "true");
     document.getElementById("answer-box").value = "";
+    document.getElementById("cardnumber").innerHTML = (cardIdx+1)+"/"+NUMBER_OF_QUESTIONS;
 
     // Display data
     let data = currentList[cardIdx];
@@ -233,10 +243,20 @@ function showCard() {
     }
     
     // Get status
-    let cardStatus = document.getElementById("cardstatus")
+    let cardStatus = document.getElementById("cardstatus");
     if (currentResults[cardIdx] == true) cardStatus.innerHTML = "&check;";
     else if (currentResults[cardIdx] == false) cardStatus.innerHTML = "&#10005;";
     else cardStatus.innerHTML = "";
+
+    // Get previous answer if already answered
+    if (currentResults[cardIdx] != null && givenAnswers[cardIdx] != null) {
+        document.getElementById('answer-field').style.display = "none";
+        document.getElementById('submitted-answer').innerHTML = "Your answer: "+givenAnswers[cardIdx]+" <br/>Right answer: "+currentList[cardIdx].target+"";
+    }
+    else {
+        document.getElementById('answer-field').style.display = "block";
+        document.getElementById('submitted-answer').innerHTML = "";
+    }
 
     //Save cards
     //if (cardAlreadySaved(base, target)) toggleSavedButton(true);

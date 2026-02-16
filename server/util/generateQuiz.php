@@ -8,7 +8,7 @@
     $jsonData = getJsonDataFromFile($FILE_LOCATION_LIST);
     $allWords = getListOfAllWords($jsonData);
     $randomList = getRandomList($allWords, $NUMBER_OF_QUESTIONS);
-    print_r($randomList);
+    addNewDataToJsonFile(getCurrentDate(), $randomList, $FILE_LOCATION_QUIZ);
 
     function getListOfAllWords($vocabLists) {
         $result = [];
@@ -22,13 +22,24 @@
 
     function getRandomList($wordList, $numQuestions) {
         $result = [];
+        $seenIds = [];
         for ($i = 0; $i < $numQuestions; $i++ ) {
-            $randomIndex = mt_rand(0, count($wordList)-1);
+            $randomIndex = -1;
+            while ($randomIndex == -1) {
+                $newIndex = mt_rand(0, count($wordList)-1);
+                if (!in_array($newIndex, $seenIds)) { 
+                    $randomIndex = $newIndex;
+                }
+            }
             array_push($result, $wordList[$randomIndex]);
+            array_push($seenIds, $newIndex); 
         }
-        return $result;
+        return [ "vocab" => $result ];
     }
 
-
+    function getCurrentDate() {
+        date_default_timezone_set("America/Chicago");
+        return date("Ymd");
+    }
 
 ?>
