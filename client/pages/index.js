@@ -319,7 +319,10 @@ function loadPage(serverResponse) {
     getSaved();
     updateSaved();
     updateModeView();
-    if (readListFromURL() && isListIdValid(readListFromURL())) list = readListFromURL();
+    if (readListFromURL()) { 
+        list = readListFromURL();
+        if (!isListIdValid(list)) list = "all";
+    }    
     start();
 }
 

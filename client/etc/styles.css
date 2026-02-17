@@ -30,7 +30,7 @@ button.active {
     background-color: rgb(186, 186, 186);
 }
 
-button:disabled {
+button:disabled, #quizanswer input:disabled {
     background-color: #eee;
     color: gray;
     border-color: lightgray;
@@ -71,12 +71,6 @@ select {
     font-size: 0.9em;
 }
 
-#cardstatus {
-    position: absolute;
-    font-size: 2em;
-    margin-left: -150px;
-}
-
 #reviewmode {
     display: none;
 }
@@ -112,7 +106,7 @@ select {
     display: inline-block;
 }
 
-#pagenav {
+.pagenav {
     display: inline-block;
     font-weight: normal;
     font-size: 0.875rem;
@@ -214,6 +208,21 @@ select {
     margin-bottom: 7px;
 }
 
+#cardstatus {
+    position: absolute;
+    font-size: 2em;
+    margin-left: -150px;
+}
+
+#cardnumber {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+    color: darkgray;
+    font-size: 0.875em;
+}
+
+
 /* ************ */
 /* *** EDIT *** */
 /* ************ */
@@ -311,6 +320,60 @@ table input {
     text-decoration: underline;
     color: #777;
     padding-left: 7px;
+}
+
+/* ************ */
+/* *** QUIZ *** */
+/* ************ */
+
+#quizanswer input {
+    background-color: transparent;
+    color: black;
+    border: 1px solid #777;
+    border-radius: 5px;
+    padding: 10px 15px;
+    display: inline-block;
+    width: 210px;
+}
+
+#quiz-dates {
+    margin-top: -10px;
+    margin-bottom: 25px;
+}
+
+#navstatus, #navstatus * {
+    user-select: none;
+}
+
+.navstatus-char {
+    display: inline-block;
+    margin: auto 2px; 
+    width: 12px;
+    max-width: 12px;
+    overflow: hidden;
+    border-bottom: 1px solid black;
+    color: black;
+    user-select: none;
+}
+
+.char-completed {
+    cursor: pointer;
+}
+
+#submitted-answer {
+    color: #333;
+}
+
+#submitted-answer table {
+    width: auto;
+    max-width: 300px;
+    border: 0px solid transparent;
+}
+
+#submitted-answer table td, #submitted-answer table tr  {
+    width: auto;
+    border: 0px solid transparent;
+    padding-right: 10px;
 }
 
 /* *********************** */

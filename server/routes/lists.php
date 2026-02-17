@@ -10,7 +10,6 @@
     function getSavedData() {
         global $FILE_LOCATION;
         $savedData = file_get_contents($FILE_LOCATION);
-        //$savedData = substr($savedData, 23, -32);
         return json_decode($savedData, true);
     }
 
@@ -24,9 +23,6 @@
     function getHttpInputs() {
         $inputs = file_get_contents('php://input');
         return $inputs;
-        // Not necessary bc already encoded?
-        //$pattern = '/(\<|\>|\\|\;|\'|\"|\=|\@|\#|\$|\%|\^|\*)+/u';
-        //return preg_replace($pattern, '', $inputs);
     }
 
     // **************
