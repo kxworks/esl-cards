@@ -15,8 +15,6 @@
             <button id="hide-settings" onclick="toggleSettings()">Settings</button>
             <div id="settings">
                 <h2>Settings</h2>
-                <h3>Card view</h3>
-                <div id="cardview"></div>
                 <h3>Display mode</h3>
                 <div id="darkmode">
                     <button id="lightbutton" onclick="changeDarkMode(false)">Light mode</button>
@@ -27,7 +25,7 @@
         </div>
         <div id="flashcards">
             <h2>Today's Daily Quiz</h2>
-            <p id="quiz-dates"><span id="todays-date">...</span>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="pagenav link-button" href="#">Past quizzes</a></p>
+            <p id="quiz-dates"><span id="todays-date">...</span><!--&nbsp;&nbsp;|&nbsp;&nbsp;<a class="pagenav link-button" href="#">Past quizzes</a>--></p>
             <div id="quiznav">
                 <button id="prev" onclick="changeCard(-1, false)">Previous</button>
                 <button id="next" onclick="changeCard(1, true)">Next</button>

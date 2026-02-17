@@ -9,6 +9,7 @@ let currentResults = [];
 let givenAnswers = [];
 const NUMBER_OF_QUESTIONS = 10;
 let completed = false;
+let savedCards = [];
 
 // ********************
 // *** LOAD / START ***
@@ -29,6 +30,7 @@ function loadPageWithData(serverResponse) {
     addCurrentListToURL();
     updatePageDate(getCurrentDate());
     generateSettings();
+    getSaved();
     if (serverResponse.vocab) { 
         currentList = serverResponse.vocab;
         start();
@@ -259,8 +261,8 @@ function showCard() {
     }
 
     //Save cards
-    //if (cardAlreadySaved(base, target)) toggleSavedButton(true);
-    //else toggleSavedButton(false);
+    if (cardAlreadySaved(base, target)) toggleSavedButton(true);
+    else toggleSavedButton(false);
 }
 
 function recordResult(gotItRight) {
@@ -329,26 +331,70 @@ function toggleSettings() {
 function generateSettings() {
     getPrefs();
     updateDarkModeView();
-    generateLanguageButtons();
-}
-
-function generateLanguageButtons() {
-    let baseActive = (view == BASE_LANG.name) ? "active" : "";
-    let targetActive = (view == TARGET_LANG.name) ? "active" : "";
-    document.getElementById("cardview").innerHTML += '<button id="base" class="'+baseActive+'" onclick="changeView(\'base\')">'+BASE_LANG.name+' first</button> ';
-    document.getElementById("cardview").innerHTML += '<button id="target" class="'+targetActive+'" onclick="changeView(\'target\')">'+TARGET_LANG.name+' first</button>';
-}
-
-function changeView(option) {
-    let newView = "";
-    option == "base" ? newView = BASE_LANG.name : newView = TARGET_LANG.name;
-    view = newView;
-    updateActiveButton("cardview", option)
-    savePrefs();
 }
 
 function changeDarkMode(enabled) {
     darkMode = enabled;
     updateDarkModeView();
     savePrefs();
+}
+
+// ******************
+// *** SAVE CARDS ***
+// ******************
+
+function getSaved() {
+    let saved = localStorage.getItem("savedCards")
+    if (saved) savedCards = JSON.parse(saved);
+}
+
+function saveCard(event) {
+    event.stopPropagation();
+    let hintText = document.getElementById("hint").innerText;
+    let answerText = document.getElementById("answer").innerText;
+    let baseHint = "";
+    let baseAnswer = "";
+    if (view == BASE_LANG.name) { baseHint = hintText; baseAnswer = answerText;} 
+    else if (view == TARGET_LANG.name) { baseHint = answerText; baseAnswer = hintText; } 
+    if (savedCards) {
+        let saved = false;
+        if (cardAlreadySaved(baseHint, baseAnswer)) removeSavedCard(baseHint, baseAnswer);
+        else {
+            savedCards.push({ "base": baseHint, "target": baseAnswer });
+            localStorage.setItem("savedCards", JSON.stringify(savedCards));
+            saved = true;
+        }
+        toggleSavedButton(saved);
+    }
+}
+
+function cardAlreadySaved(baseHint, baseAnswer) {
+    let result = false;
+    savedCards.forEach((card) => {
+        if (card.base == baseHint && card.target == baseAnswer) result = true;
+    })
+    return result;
+}
+
+function removeSavedCard(baseHint, baseAnswer) {
+    let result = [];
+    let result2 = savedCards.filter(card => (card.base !== baseHint && card.target !== baseAnswer));
+    savedCards.forEach((card) => {
+        if (card.base == baseHint && card.target == baseAnswer) return;
+        else result.push({ "base": card.base, "target": card.target });
+    });
+    savedCards = result2;
+    localStorage.setItem("savedCards", JSON.stringify(savedCards));
+}
+
+function toggleSavedButton(saved) {
+    let saveCardButton = document.getElementById("savecard");
+    if (saved) { 
+        saveCardButton.innerHTML = "Saved";
+        saveCardButton.className = "active";
+    }
+    else {
+        saveCardButton.innerHTML = "Save";
+        saveCardButton.className = "";
+    }
 }
