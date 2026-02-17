@@ -251,7 +251,7 @@ function showCard() {
     // Get previous answer if already answered
     if (currentResults[cardIdx] != null && givenAnswers[cardIdx] != null) {
         document.getElementById('answer-field').style.display = "none";
-        document.getElementById('submitted-answer').innerHTML = "Your answer: "+givenAnswers[cardIdx]+" <br/>Right answer: "+currentList[cardIdx].target+"";
+        document.getElementById('submitted-answer').innerHTML = "<table><tr><td>You said:</td><td>"+givenAnswers[cardIdx]+"</td></tr><tr><td>The answer:</td><td>"+currentList[cardIdx].target+"</td></tr></table>";
     }
     else {
         document.getElementById('answer-field').style.display = "block";

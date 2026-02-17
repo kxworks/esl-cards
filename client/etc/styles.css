@@ -364,6 +364,16 @@ table input {
     color: #333;
 }
 
+#submitted-answer table {
+    width: 300px;
+    border: 0px solid transparent;
+}
+
+#submitted-answer table td, #submitted-answer table tr  {
+    width: auto;
+    border: 0px solid transparent;
+}
+
 /* *********************** */
 /* *** SMALLER SCREENS *** */
 /* *********************** */
