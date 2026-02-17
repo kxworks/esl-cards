@@ -6,3 +6,4 @@ deployment:
     - /bin/cp -R server $DEPLOYPATH
     - /bin/cp index.html $DEPLOYPATH
     - /bin/cp edit.html $DEPLOYPATH
+    - /bin/cp quiz.html $DEPLOYPATH
