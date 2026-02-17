@@ -29,3 +29,7 @@ button:disabled, input:disabled {
 #answer-box {
     border-color: white !important;
 }
+
+#cardnumber {
+    color: #ccc !important;
+}
