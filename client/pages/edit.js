@@ -147,8 +147,6 @@ function generateText() {
     textArea.innerHTML = convertVocabListToCSV(currentList);
     textArea.style.height = (16 * (currentList.length+3)) + "px";
     document.getElementById("editpane").appendChild(textArea);
-    textArea.focus();
-    textArea.setSelectionRange(textArea.value.length, textArea.value.length);
     addInputListeners("textarea");
 }
 

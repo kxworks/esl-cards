@@ -204,7 +204,7 @@ function showCard() {
     tap.style.visibility = "visible";
     saveButton.style.visibility = "visible";
 
-    document.getElementById("status").innerHTML = "Card: "+(cardIdx+1)+"/"+currentList.length;
+    document.getElementById("status").innerHTML = (cardIdx+1)+"/"+currentList.length;
     let data = currentList[cardIdx];
     let base = data["base"];
     let target = data["target"];
@@ -327,6 +327,7 @@ function loadPage(serverResponse) {
 }
 
 function start() {
+    if (getListIndexPage(list).length == 0) return;
     updateActiveButton("lists", list);
     addCurrentListToURL();
     document.getElementById("list-dropdown").value = list;

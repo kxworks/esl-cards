@@ -175,7 +175,7 @@ select {
 
 #status {
   display: inline-block; 
-  width: 95px;
+  width: 60px;
   font-size: 0.9em;
 }
 
@@ -390,10 +390,19 @@ table input {
 }
 
 @media screen and (max-width: 450px) {
+    input, textarea {
+        font-size: 16px;
+    }
+    .row-button {
+        font-size: 20px;
+    }
     table {
-        width: 380px;
+        width: 330px;
     }
     textarea {
         width: 300px;
+    }
+    .seq-row-button {
+        display: none;
     }
 }
