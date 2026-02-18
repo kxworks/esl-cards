@@ -47,7 +47,6 @@ function start() {
     createResultList();
     cardIdx = 0;
     showCard();
-    document.getElementById("answer-box").focus();
 }
 
 // *************
