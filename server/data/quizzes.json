@@ -1,16 +1,222 @@
 {
-    "20260209": {
+    "20260216": {
         "vocab": [
-            {"base":"Hello","target":"Hola"},
-            {"base":"Hello2","target":"Hola"},
-            {"base":"Hello3","target":"Hola"},
-            {"base":"Hello4","target":"Hola"},
-            {"base":"Hello5","target":"Hola"},
-            {"base":"Hello6","target":"Hola"},
-            {"base":"Hello7","target":"Hola"},
-            {"base":"Hello8","target":"Hola"},
-            {"base":"Hello9","target":"Hola"},
-            {"base":"Hello10","target":"Hola"}
+            {
+                "base": "The milk",
+                "target": "La leche"
+            },
+            {
+                "base": "The pumpkin",
+                "target": "La calabaza"
+            },
+            {
+                "base": "The allergy",
+                "target": "La alergia"
+            },
+            {
+                "base": "The cookie",
+                "target": "La galleta"
+            },
+            {
+                "base": "The medical history",
+                "target": "El historial m\u00e9dico"
+            },
+            {
+                "base": "The siblings",
+                "target": "Los hermanos"
+            },
+            {
+                "base": "The breed",
+                "target": "La raza"
+            },
+            {
+                "base": "To purr",
+                "target": "Ronronear"
+            },
+            {
+                "base": "The boot",
+                "target": "La bota"
+            },
+            {
+                "base": "Sit quietly",
+                "target": "Si\u00e9ntate en silencio"
+            }
+        ]
+    },
+    "20260217": {
+        "vocab": [
+            {
+                "base": "Do it like this",
+                "target": "Hazlo as\u00ed"
+            },
+            {
+                "base": "The corn",
+                "target": "El ma\u00edz"
+            },
+            {
+                "base": "Can you help me clean up?",
+                "target": "\u00bfPuedes ayudarme a recoger?"
+            },
+            {
+                "base": "The dog",
+                "target": "El perro"
+            },
+            {
+                "base": "The husband",
+                "target": "El esposo"
+            },
+            {
+                "base": "It\u2019s time to eat.",
+                "target": "Es hora de comer."
+            },
+            {
+                "base": "How are you?",
+                "target": "\u00bfC\u00f3mo est\u00e1s?"
+            },
+            {
+                "base": "My name is __.",
+                "target": "Me llamo ___."
+            },
+            {
+                "base": "To scratch",
+                "target": "Rascar"
+            },
+            {
+                "base": "It\u2019s time for a nap.",
+                "target": "Es hora de una siesta."
+            }
+        ]
+    },
+    "20260218": {
+        "vocab": [
+            {
+                "base": "The thanks \/ gratitude",
+                "target": "El agradecimiento"
+            },
+            {
+                "base": "The uncle",
+                "target": "El t\u00edo"
+            },
+            {
+                "base": "Goodbye",
+                "target": "Adi\u00f3s"
+            },
+            {
+                "base": "To swim",
+                "target": "Nadar"
+            },
+            {
+                "base": "The crowd",
+                "target": "El multitud"
+            },
+            {
+                "base": "I'm well \/ I'm good",
+                "target": "Estoy bien"
+            },
+            {
+                "base": "The diaper",
+                "target": "El pa\u00f1al"
+            },
+            {
+                "base": "The relative",
+                "target": "El pariente"
+            },
+            {
+                "base": "Sit down",
+                "target": "Si\u00e9ntate"
+            },
+            {
+                "base": "How are you?",
+                "target": "\u00bfC\u00f3mo est\u00e1s?"
+            }
+        ]
+    },
+    "20260219": {
+        "vocab": [
+            {
+                "base": "The ornament",
+                "target": "El adorno"
+            },
+            {
+                "base": "Divorced",
+                "target": "Divorciado"
+            },
+            {
+                "base": "The green beans",
+                "target": "Las jud\u00edas verdes"
+            },
+            {
+                "base": "The tail",
+                "target": "La cola"
+            },
+            {
+                "base": "The boot",
+                "target": "La bota"
+            },
+            {
+                "base": "To pick (apples)",
+                "target": "Recoger (manzanas)"
+            },
+            {
+                "base": "The snack",
+                "target": "La merienda"
+            },
+            {
+                "base": "The pet",
+                "target": "La mascota"
+            },
+            {
+                "base": "The swimsuit",
+                "target": "El traje de ba\u00f1o"
+            },
+            {
+                "base": "The gravy",
+                "target": "La salsa"
+            }
+        ]
+    },
+    "20260220": {
+        "vocab": [
+            {
+                "base": "Festive",
+                "target": "Festivo"
+            },
+            {
+                "base": "To hide",
+                "target": "Esconderse"
+            },
+            {
+                "base": "Bad",
+                "target": "Mal"
+            },
+            {
+                "base": "The schedule",
+                "target": "El horario"
+            },
+            {
+                "base": "The gravy",
+                "target": "La salsa"
+            },
+            {
+                "base": "The meow",
+                "target": "El maullido\t"
+            },
+            {
+                "base": "Wait a moment",
+                "target": "Espera un momento"
+            },
+            {
+                "base": "To dress up",
+                "target": "Disfrazarse"
+            },
+            {
+                "base": "The fur",
+                "target": "El pelaje"
+            },
+            {
+                "base": "Merry Christmas",
+                "target": "Feliz navidad"
+            }
         ]
     }
 }

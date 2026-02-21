@@ -10,33 +10,36 @@ let givenAnswers = [];
 const NUMBER_OF_QUESTIONS = 10;
 let completed = false;
 let savedCards = [];
+let showingAllQuizzes = false;
+const DATE_PICKER_MIN_DATE = "2026-02-16";
 
 // ********************
 // *** LOAD / START ***
 // ********************
 
 function initialLoad() {
-    if (readListFromURL()) { // Add valid check
+    updatePageDate(getCurrentDate());
+    setDatePickerAttributes();
+    generateSettings();
+    getSaved();
+    if (readListFromURL() && isUrlDateValid(readListFromURL())) {
         list = readListFromURL();
+        if (readListFromURL() != getCurrentDate("yyyymmdd")) toggleAllQuizzes();
     }
     else {
-        let currentDate = getCurrentDate(true);
+        removeListFromURL("quiz");
+        let currentDate = getCurrentDate("yyyymmdd");
         list = currentDate;
     }
     getQuiz(list, loadPageWithData);
 }
 
 function loadPageWithData(serverResponse) {
-    addCurrentListToURL();
-    updatePageDate(getCurrentDate());
-    generateSettings();
-    getSaved();
     if (serverResponse.vocab) { 
         currentList = serverResponse.vocab;
         start();
     }
     else {
-        console.log("no data");
         // Add logic to get most recent
         document.querySelectorAll("#answer-box, #flashcards button").forEach(element => element.setAttribute("disabled", "true"));
         return;
@@ -60,9 +63,16 @@ addEventListener("keydown", (event) => {
     }
 });
 
-// ***************
-// *** HELPERS ***
-// ***************
+// *************
+// *** DATES ***
+// *************
+
+function isUrlDateValid(date) {
+    if (date >= removeHyphensFromDate(DATE_PICKER_MIN_DATE) && date <= getCurrentDate("yyyymmdd")) return true;
+    else {
+        return false;
+    }
+}
 
 function formatMonth(date, sysFormat) {
     if (sysFormat) {
@@ -77,11 +87,14 @@ function formatMonth(date, sysFormat) {
     }
 }
 
-function getCurrentDate(sysFormat=false) {
+function getCurrentDate(sysFormat=null) {
     let date = new Date();
     let dateValues = date.toString().split(" ");
-    if (sysFormat) { 
-        return `${dateValues[3]}${formatMonth(date, true)}${dateValues[2]}`
+    if (sysFormat == "yyyymmdd") { 
+        return `${dateValues[3]}${formatMonth(date, true)}${dateValues[2]}`;
+    }
+    else if (sysFormat == "yyyy-mm-dd") {
+        return `${dateValues[3]}-${formatMonth(date, true)}-${dateValues[2]}`;
     }
     else {
         return `${formatMonth(date, false)} ${dateValues[2]}, ${dateValues[3]}`;
@@ -91,6 +104,55 @@ function getCurrentDate(sysFormat=false) {
 function updatePageDate(givenDate) {
     document.getElementById("todays-date").innerHTML = givenDate;
 }
+
+function setDatePickerAttributes() {
+    document.getElementById("date-picker").setAttribute("min", DATE_PICKER_MIN_DATE);
+    document.getElementById("date-picker").setAttribute("value", getCurrentDate("yyyy-mm-dd"));
+    document.getElementById("date-picker").setAttribute("max", getCurrentDate("yyyy-mm-dd"));
+}
+
+function toggleAllQuizzes() {
+    showingAllQuizzes = !showingAllQuizzes;
+    if (showingAllQuizzes) {
+        document.getElementById("date-picker-span").style.display = "inline-block";
+        document.getElementById("todays-date").style.display = "none";
+        document.getElementById("date-picker").value = addHyphensToDate(list);
+        if (list == getCurrentDate("yyyymmdd")) document.getElementById("all-quizzes").innerHTML = "Back";
+        else document.getElementById("all-quizzes").innerHTML = "Go to today's quiz";
+    }
+    else {
+        document.getElementById("date-picker-span").style.display = "none";
+        document.getElementById("todays-date").style.display = "inline-block";
+        document.getElementById("all-quizzes").innerHTML = "More quizzes";
+        fetchNewQuiz(getCurrentDate("yyyymmdd"));
+        removeListFromURL("quiz");
+    }
+}
+
+function removeHyphensFromDate(date) {
+    return date.replaceAll("-", "");
+}
+
+function addHyphensToDate(date) {
+    return date.substring(0,4)+"-"+date.substring(4,6)+"-"+date.substring(6,8);
+}
+
+function handleDatePickerChange(event) {
+    let dateSysFormat = removeHyphensFromDate(event.target.value);
+    fetchNewQuiz(dateSysFormat);
+    if (dateSysFormat == getCurrentDate("yyyymmdd")) document.getElementById("all-quizzes").innerHTML = "Back";
+    else document.getElementById("all-quizzes").innerHTML = "Go to today's quiz";
+}
+
+function fetchNewQuiz(date) {
+    list = date;
+    getQuiz(list, loadPageWithData);
+    addCurrentListToURL();
+}
+
+// *************
+// *** CARDS ***
+// *************
 
 function generateNavStatus() {
     let result = "";
