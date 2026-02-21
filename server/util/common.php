@@ -19,7 +19,7 @@
             echo '{ "status": 200, "message": "successfully created for '.$newId.'." }';
         }
         else {
-            echo '{ "status": 200, "message": "no record created. id already exists." }';
+            echo '{ "status": 200, "message": "no record created. record for id '.$newId.' already exists." }';
         }
     }
 

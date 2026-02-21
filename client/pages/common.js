@@ -83,6 +83,10 @@ function readListFromURL() {
     return urlList;
 }
 
+function removeListFromURL(page) {
+    window.history.pushState({}, "", page+".html");
+}
+
 function generateListsDropdown(pageType, dropdownSelectCallback, actionButtonCallback) {
     // lists dropdown 
     document.getElementById("lists").innerHTML = "";
