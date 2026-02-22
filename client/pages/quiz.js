@@ -37,19 +37,21 @@ function initialLoad() {
 function loadPageWithData(serverResponse) {
     if (serverResponse.vocab) { 
         currentList = serverResponse.vocab;
-        start();
+        toggleDisableAllButtons(false);
     }
     else {
-        // Add logic to get most recent
-        document.querySelectorAll("#answer-box, #flashcards button").forEach(element => element.setAttribute("disabled", "true"));
-        return;
+        currentList = [ { base: "", target: "" } ];
+        toggleDisableAllButtons(true);
     }
+    start();
 }
 
 function start() {
     createResultList();
     cardIdx = 0;
+    completed = false;
     showCard();
+    document.getElementById("submit-button").removeAttribute("disabled");
 }
 
 // *************
@@ -203,8 +205,9 @@ function submitGuess() {
 }
 
 function checkAnswer(userAnswer, realAnswer) {
-    let cleanedUserAnswer = userAnswer.toLowerCase().replaceAll(/(\?|\.|\,|\!|\¿|\¡|\/|\(.*\))+/g, "").trim();
-    let cleanedRealAnswer = realAnswer.toLowerCase().replaceAll(/(\?|\.|\,|\!|\¿|\¡|\/|\(.*\))+/g, "").trim();
+    let regex = /(\?|\.|\,|\!|\¿|\¡|\/|\_|\(.*\))+/g;
+    let cleanedUserAnswer = userAnswer.toLowerCase().replaceAll(regex, "").trim();
+    let cleanedRealAnswer = realAnswer.toLowerCase().replaceAll(regex, "").trim();
     return cleanedUserAnswer == cleanedRealAnswer;
 }
 
@@ -218,6 +221,20 @@ function showCompleteMessage() {
     document.getElementById("submit-button").setAttribute("disabled", "true");
 }
 
+// ************
+// *** MISC ***
+// ************
+
+
+function toggleDisableAllButtons(disable) {
+    let querySelctor = "#answer-box, #flashcards button:not(#all-quizzes)";
+    if (disable) {
+        document.querySelectorAll(querySelctor).forEach(element => element.setAttribute("disabled", "true"));
+    }
+    else {
+        document.querySelectorAll(querySelctor).forEach(element => element.removeAttribute("disabled"));
+    }
+}
 
 // *** *** ***
 
