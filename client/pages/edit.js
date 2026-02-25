@@ -434,7 +434,6 @@ function getInitialList() {
 }
 
 function start() {
-    updateActiveButton("lists", list);
     addCurrentListToURL();
     document.getElementById("list-dropdown").value = list;
     if (createMode) {
