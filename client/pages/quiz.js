@@ -22,7 +22,7 @@ function initialLoad() {
     setDatePickerAttributes();
     generateSettings();
     getSaved();
-    if (readListFromURL() && isUrlDateValid(readListFromURL())) {
+    if (readListFromURL() && isQuizDateValid(readListFromURL())) {
         list = readListFromURL();
         if (readListFromURL() != getCurrentDate("yyyymmdd")) toggleAllQuizzes();
     }
@@ -69,7 +69,7 @@ addEventListener("keydown", (event) => {
 // *** DATES ***
 // *************
 
-function isUrlDateValid(date) {
+function isQuizDateValid(date) {
     if (date >= removeHyphensFromDate(DATE_PICKER_MIN_DATE) && date <= getCurrentDate("yyyymmdd")) return true;
     else {
         return false;
@@ -141,9 +141,14 @@ function addHyphensToDate(date) {
 
 function handleDatePickerChange(event) {
     let dateSysFormat = removeHyphensFromDate(event.target.value);
-    fetchNewQuiz(dateSysFormat);
-    if (dateSysFormat == getCurrentDate("yyyymmdd")) document.getElementById("all-quizzes").innerHTML = "Back";
-    else document.getElementById("all-quizzes").innerHTML = "Go to today's quiz";
+    if (isQuizDateValid(dateSysFormat)) {
+        fetchNewQuiz(dateSysFormat);
+        if (dateSysFormat == getCurrentDate("yyyymmdd")) document.getElementById("all-quizzes").innerHTML = "Back";
+        else document.getElementById("all-quizzes").innerHTML = "Go to today's quiz";
+    }
+    else {
+        alert("Selected date not valid. Try a date between 02/16/26 and today.");
+    }
 }
 
 function fetchNewQuiz(date) {
@@ -384,7 +389,7 @@ function getPrefs() {
 }
 
 function savePrefs() {
-    let prefsObj = { mode: mode, view: view, darkMode: darkMode };
+    let prefsObj = { mode: "quiz", view: view, darkMode: darkMode };
     localStorage.setItem("prefs", JSON.stringify(prefsObj)); 
 }
 
