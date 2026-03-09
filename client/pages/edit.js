@@ -208,15 +208,15 @@ function updateEditTitle(name) {
 
 // This method is based on the method found here:
 // https://medium.com/@python-javascript-php-html-css/how-to-effectively-generate-guids-in-javascript-53d56095ad3b
-function generateGUID() {
+function generateID() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
                .toString(16)
                .substring(1);
   }
-  let newGUID = s4() + '-' + s4() + '-' + s4() + '-' + s4();
-  if (Object.keys(vocabLists).includes(newGUID)) return generateGUID();
-  return newGUID;
+  let newID = s4() + "" + s4();
+  if (Object.keys(vocabLists).includes(newID)) return generateID();
+  return newID;
 }
 
 function tempSaveChanges() {
@@ -310,7 +310,7 @@ function submitChanges() {
     else title = vocabLists[list].title;
     if (title.length == 0) { alert("Please add a title before submitting."); return; }
     // Get list ID
-    if (createMode) id = generateGUID();
+    if (createMode) id = generateID();
     else id = list;
     if (id.length == 0) { alert("There was a problem generating an ID. Please try again."); return; }
     // Stringify and send

@@ -29,10 +29,15 @@
         </div>
         <div id="wordlists">
             <h2>Word lists</h2>
-            <div id="lists"></div>
+            <div id="lists">
+                <button id="saved" disabled="true" class="">Saved</button>
+                <span class="">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                <select id="list-dropdown" class=""></select>
+                <span id="dropdown-chevron" class="">⌄</span>
+            </div>
         </div>
         <div id="flashcards">
-            <h2>Flashcards (<span id="flashtype">...</span>)</h2>
+            <h2>Flashcards <span id="flashtype"></span></h2>
             <div id="reviewmode">
                 <button id="prev" onclick="changeCard(-1)">Previous</button>
                 <button id="next" onclick="changeCard(1)">Next</button>
