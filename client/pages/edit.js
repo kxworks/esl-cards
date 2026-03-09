@@ -144,6 +144,7 @@ function deleteRow(event) {
 
 function generateText() {
     let textArea = document.createElement("textarea");
+    textArea.id = "edit-textarea";
     textArea.innerHTML = convertVocabListToCSV(currentList);
     textArea.style.height = (16 * (currentList.length+3)) + "px";
     document.getElementById("editpane").appendChild(textArea);
@@ -158,6 +159,10 @@ function convertVocabListToCSV(list) {
     if (list.length > 0) return result.substring(0,result.length-1);
     else return result;
 }
+
+// **************
+// *** INPUTS *** 
+// **************
 
 function addInputListeners() {
     document.querySelectorAll("#editpane input, #editpane textarea").forEach((input) => {
@@ -182,6 +187,16 @@ function enableResetButtonWrapper() {
         if (!areObjectsEqual(obj, blankObj)) toggleResetChangesButton(false);
         else toggleResetChangesButton(true);
     }
+}
+
+function getTextAreaLineCount(id) {
+    let textContent = document.getElementById(id).value;
+    let numLines = 0;
+    for (let i=0; i<textContent.length; i++) {
+        let currentChar = textContent[i];
+        if (currentChar == "\n") numLines++;
+    }
+    return numLines;
 }
 
 // ***********************
