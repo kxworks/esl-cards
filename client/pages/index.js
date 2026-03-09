@@ -337,7 +337,7 @@ function start() {
     cardIdx = 0;
     showCard();
     let title = (list == "all" ? "All" : (list == "saved") ? "Saved" : vocabLists[list].title);
-    document.getElementById("flashtype").innerHTML = title;
+    document.getElementById("flashtype").innerHTML = "("+title+")";
     document.getElementById("didntknow").removeAttribute("disabled");
     document.getElementById("knewit").removeAttribute("disabled");
 }
