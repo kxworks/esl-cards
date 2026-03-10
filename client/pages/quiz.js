@@ -200,7 +200,9 @@ function jumpToCard(index) {
 
 function submitGuess() {
     let userAnswer = document.getElementById("answer-box").value;
-    let realAnswer = currentList[cardIdx].target;
+    let realAnswer;
+    if (view == BASE_LANG.name) realAnswer = currentList[cardIdx].target;
+    else if (view == TARGET_LANG.name) realAnswer = currentList[cardIdx].base;
     let gotItRight = false;
     if (checkAnswer(userAnswer, realAnswer)) gotItRight = true;
     if (gotItRight) { alert("Nice one! \"" + realAnswer + "\" is correct."); recordResult(true); }
@@ -382,7 +384,6 @@ function getPrefs() {
     let prefs = localStorage.getItem("prefs")
     if (prefs) { 
         prefsObj = JSON.parse(prefs);
-        if (prefsObj.mode) mode = prefsObj.mode;
         if (prefsObj.view) view = prefsObj.view;
         if (prefsObj.darkMode) darkMode = prefsObj.darkMode;
     }
