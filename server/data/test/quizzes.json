@@ -1,0 +1,23 @@
+{ 
+    "20260302": {
+        "vocab": [
+            { "base": "Test11B", "target": "Test11T" },
+            { "base": "Test12B", "target": "Test12T" },
+            { "base": "Test13B", "target": "Test13T" }
+        ]
+    }, 
+    "20260301": {
+        "vocab": [
+            { "base": "Test21B", "target": "Test21T" },
+            { "base": "Test22B", "target": "Test22T" },
+            { "base": "Test23B", "target": "Test23T" }
+        ]
+    },
+    "20260228": {
+        "vocab": [
+            { "base": "Test11B", "target": "Test11T" },
+            { "base": "Test12B", "target": "Test12T" },
+            { "base": "Test31B", "target": "Test31T" }
+        ]
+    }
+}
