@@ -6,10 +6,15 @@
     $NUMBER_OF_QUESTIONS = 10;
     $NUMBER_OF_DAYS_TO_EXCLUDE = 3;
 
-    $jsonData = getJsonDataFromFile($FILE_LOCATION_LIST);
-    $exclusionList = getPreviousQuizzesList($FILE_LOCATION_QUIZ, $NUMBER_OF_DAYS_TO_EXCLUDE);
-    $randomList = getRandomList($jsonData, $NUMBER_OF_QUESTIONS, $exclusionList);
-    addNewDataToJsonFile(getCurrentDate(), $randomList, $FILE_LOCATION_QUIZ);
+    try {
+        $jsonData = getJsonDataFromFile($FILE_LOCATION_LIST);
+        $exclusionList = getPreviousQuizzesList($FILE_LOCATION_QUIZ, $NUMBER_OF_DAYS_TO_EXCLUDE);
+        $randomList = getRandomList($jsonData, $NUMBER_OF_QUESTIONS, $exclusionList);
+        addNewDataToJsonFile(getCurrentDate(), $randomList, $FILE_LOCATION_QUIZ);
+    }
+    catch (Exception $e) {
+        echo '{ "status": 500, "message": "error occurred: '.$e->getMessage().'." }';
+    }
 
     function getPreviousQuizzesList($filePath, $numDays) {
         $quizData = getJsonDataFromFile($filePath);
