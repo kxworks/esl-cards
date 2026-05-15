@@ -7,3 +7,4 @@ deployment:
     - /bin/cp index.html $DEPLOYPATH
     - /bin/cp edit.html $DEPLOYPATH
     - /bin/cp quiz.html $DEPLOYPATH
+    - /bin/cp verbs.html $DEPLOYPATH
