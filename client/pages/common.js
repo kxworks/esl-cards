@@ -10,6 +10,7 @@ let vocabLists = {};
 let darkMode = false;
 const INDEX_PAGE = "index";
 const EDIT_PAGE = "edit";
+const VERBS_PAGE = "verbs";
 
 // ******************
 // *** WORD LISTS ***
@@ -94,6 +95,7 @@ function generateListsDropdown(pageType, dropdownSelectCallback, actionButtonCal
     select.setAttribute("id", "list-dropdown");
     select.addEventListener("change", function(event) { dropdownSelectCallback(event)});
     if (pageType == INDEX_PAGE) select.innerHTML += '<option value="all">All Words</option>';
+    else if (pageType == VERBS_PAGE) select.innerHTML += '<option value="all">All Verbs</option>';
     let sortedVocabListIds = sortListIdsByTitle();
     sortedVocabListIds.forEach(id => {
         select.innerHTML += '<option value="'+id+'">'+vocabLists[id].title+'</option>';
@@ -114,8 +116,10 @@ function generateListsDropdown(pageType, dropdownSelectCallback, actionButtonCal
     }
     actionButton.addEventListener("click", function(event) { actionButtonCallback(event) });
     // add to page
-    document.getElementById("lists").appendChild(actionButton);
-    document.getElementById("lists").appendChild(spacer);
+    if (pageType != VERBS_PAGE) {
+        document.getElementById("lists").appendChild(actionButton);
+        document.getElementById("lists").appendChild(spacer);
+    }
     document.getElementById("lists").appendChild(select);
     // Add down arrow (custom styling)
     let downArrow = document.createElement("span");
