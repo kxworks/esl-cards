@@ -1,0 +1,37 @@
+{ 
+    "1": {
+        "title": "1. Regular Verbs",
+        "vocab": [ 
+            { "base": "Start", "target": "Started" },
+            { "base": "Walk", "target": "Walked" },
+            { "base": "Play", "target": "Played" },
+            { "base": "Fix", "target": "Fixed" },
+            { "base": "Talk", "target": "Talked" },
+            { "base": "Listen", "target": "Listened" },
+            { "base": "Learn", "target": "Learned" },
+            { "base": "Care", "target": "Cared" },
+            { "base": "Bake", "target": "Baked" },
+            { "base": "Study", "target": "Studied" },
+            { "base": "Apply", "target": "Applied" },
+            { "base": "Ban", "target": "Banned" },
+            { "base": "Trim", "target": "Trimmed" }
+        ]
+    },
+    "2": {
+        "title": "2. Irregular Verbs",
+        "vocab": [ 
+            { "base": "Go", "target": "Went" },
+            { "base": "Eat", "target": "Ate" },
+            { "base": "Do", "target": "Did" },
+            { "base": "See", "target": "Saw" },
+            { "base": "Have", "target": "Had" },
+            { "base": "Make", "target": "Made" },
+            { "base": "Take", "target": "Took" },
+            { "base": "Give", "target": "Gave" },
+            { "base": "Get", "target": "Got" },
+            { "base": "Buy", "target": "Bought" },
+            { "base": "Come", "target": "Came" },
+            { "base": "Be", "target": "Was/were" }
+        ]
+    } 
+}

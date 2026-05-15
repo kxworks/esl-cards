@@ -5,18 +5,16 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Flashcards!</title>
         <link rel="stylesheet" href="./client/etc/styles.css"/>
-        <script src="./client/controllers/lists.js" defer></script>
+        <script src="./client/controllers/verbs.js" defer></script>
         <script src="./client/pages/common.js" defer></script>
-        <script src="./client/pages/index.js" defer></script>
+        <script src="./client/pages/verbs.js" defer></script>
     </head>
     <body onload="load()">
-        <h1>Flashcards! <a class="pagenav link-button" href="./edit.html">Edit lists</a><a class="pagenav link-button" href="./quiz.html">Quizzes</a><a class="pagenav link-button" href="./verbs.html">Verbs</a></h1>
+        <h1>Flashcards! <span style="font-size:0.875em;">(Verbs)</span> <a class="pagenav link-button" href="./index.html">Back to home</a></h1>
         <div id="settings-section">
             <button id="hide-settings" onclick="toggleSettings()">Settings</button>
             <div id="settings">
                 <h2>Settings</h2>
-                <h3>Card view</h3>
-                <div id="cardview"></div>
                 <h3>Flashcard mode</h3>
                 <div id="flashcardmode"></div>
                 <h3>Display mode</h3>
@@ -28,10 +26,8 @@
             </div>
         </div>
         <div id="wordlists">
-            <h2>Word lists</h2>
+            <h2>Verb lists</h2>
             <div id="lists">
-                <button id="saved" disabled="true" class="">Saved</button>
-                <span class="">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                 <select id="list-dropdown" class=""></select>
                 <span id="dropdown-chevron" class="">⌄</span>
             </div>
@@ -48,7 +44,7 @@
             </div>
             <div id="flashcard" onclick="showCardAnswer()">
                 <span id="cardstatus"></span>
-                <button id="savecard" onclick="saveCard(event)">Save</button>
+                <button id="savecard" onclick="saveCard(event)" style="display: none;">Save</button>
                 <p id="hint">&nbsp;</p>
                 <p id="answer">&nbsp;</p>
                 <p id="tap">Tap / click card to reveal answer</p>
