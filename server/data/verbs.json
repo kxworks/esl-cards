@@ -1,6 +1,6 @@
 { 
     "1": {
-        "title": "1. Regular Verbs",
+        "title": "1. Past Tense - Regular",
         "vocab": [ 
             { "base": "Start", "target": "Started" },
             { "base": "Walk", "target": "Walked" },
@@ -18,7 +18,7 @@
         ]
     },
     "2": {
-        "title": "2. Irregular Verbs",
+        "title": "2. Past Tense - Irregular",
         "vocab": [ 
             { "base": "Go", "target": "Went" },
             { "base": "Eat", "target": "Ate" },

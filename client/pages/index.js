@@ -16,6 +16,7 @@ let savedCards = [];
 // **************
 
 addEventListener("keydown", (event) => {
+    if (showingSidebar) return;
     switch (event.key) {
         case "Meta": showCardAnswer(); break;
         case "s": speakTextOnCard(event); break;
@@ -337,7 +338,7 @@ function start() {
     cardIdx = 0;
     showCard();
     let title = (list == "all" ? "All" : (list == "saved") ? "Saved" : vocabLists[list].title);
-    document.getElementById("flashtype").innerHTML = "("+title+")";
+    document.getElementById("flashtype").innerHTML = title;
     document.getElementById("didntknow").removeAttribute("disabled");
     document.getElementById("knewit").removeAttribute("disabled");
 }
