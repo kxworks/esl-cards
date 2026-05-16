@@ -8,7 +8,7 @@ button, select, select:focus {
     outline-color: transparent;
 }
 
-button.active {
+button.active, a.active {
     background-color: #616161 !important;
 }
 
@@ -32,4 +32,13 @@ button:disabled, input:disabled {
 
 #cardnumber {
     color: #ccc !important;
+}
+
+#sidebar {
+    background-color: transparent !important;
+}
+
+#sidebar-screen {
+        background-color: rgba(0,0,0,0.7) !important;
+
 }
