@@ -8,6 +8,7 @@ let list = "";
 let currentList = [];
 let vocabLists = {};
 let darkMode = false;
+let showingSidebar = false;
 const INDEX_PAGE = "index";
 const EDIT_PAGE = "edit";
 const VERBS_PAGE = "verbs";
@@ -126,4 +127,19 @@ function generateListsDropdown(pageType, dropdownSelectCallback, actionButtonCal
     downArrow.id = "dropdown-chevron";
     downArrow.innerHTML = "&#8964;";
     document.getElementById("lists").appendChild(downArrow);
+}
+
+// ***************
+// *** SIDEBAR ***
+// ***************
+
+function toggleSidebar(showing) {
+    showingSidebar = showing;
+    if (showingSidebar) {
+        document.getElementById("sidebar").style.display = "block";
+    }
+    else {
+        document.getElementById("sidebar").style.display = "none";
+    }
+
 }
